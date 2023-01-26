@@ -25,10 +25,14 @@ export default function App() {
         <NavigationContainer>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
-                    tabBarStyle: { styles.container },
+
+                    tabBarStyle: {  backgroundColor: "#282a36",
+                                    height: 100,
+                                    paddingTop: 20,
+                                    paddingBottom: 20, },
+
                     tabBarIcon: ({ focused, color }) => {
                         let iconName;
-
                         if (route.name === "Profile") {
                             iconName = focused ? "person-circle" : "person-circle-outline";
                         } else if (route.name === "Home") {
@@ -36,7 +40,6 @@ export default function App() {
                         } else if (route.name === "Bermudas") {
                             iconName = focused ? "videocam" : "videocam-outline";
                         }
-
                         return (
                             <Ionicons: TabBarIcon name={iconName} color={color} />
                         );
@@ -53,11 +56,11 @@ export default function App() {
     );
 }
 
-const styles = StyleSheet.create({
-    tabBar: {
-        backgroundColor: "#282a36",
-        height: 100,
-        paddingTop: 20,
-        paddingBottom: 20,
-    },
-});
+// const styles = StyleSheet.create({
+//     tabBar: {
+//         backgroundColor: "#282a36",
+//         height: 100,
+//         paddingTop: 20,
+//         paddingBottom: 20,
+//     },
+// });
