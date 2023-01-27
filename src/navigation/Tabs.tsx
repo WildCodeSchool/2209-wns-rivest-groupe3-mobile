@@ -23,24 +23,22 @@ const BottomTabs = () => {
 
                     if (route.name === "Profile") {
                         iconName = focused ? "person" : "person-outline";
-                    } else if (route.name === "HomeStack") {
+                    } else if (route.name === "Home") {
                         iconName = focused ? "home" : "home-outline";
                     } else if (route.name === "Bermudas") {
-                        iconName = focused
-                            ? "videocam"
-                            : "videocam-outline";
+                        iconName = focused ? "videocam" : "videocam-outline";
                     }
                     return (
                         <Ionicons name={iconName} size={size} color={color} />
                     );
                 },
-                tabBarActiveTintColor: "#ff79c6",
+                tabBarActiveTintColor: "#50fa7b",
                 tabBarInactiveTintColor: "#f8f8f2",
             })}
         >
             <Tab.Screen name="Profile" component={ProfileScreen} />
             <Tab.Screen
-                name="HomeStack"
+                name="Home"
                 component={HomeStackNavigator}
                 options={{ headerShown: false }}
             />

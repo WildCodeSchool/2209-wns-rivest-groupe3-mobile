@@ -13,13 +13,13 @@ export type HomeScreenNavigationProp = NativeStackNavigationProp<
     "Blog"
 >;
 
-export type DetailsScreenRouteProp = RouteProp<
+export type BlogScreenRouteProp = RouteProp<
     HomeStackNavigatorParamList,
     "Blog"
 >;
 
 export type BottomTabNavigatorParamList = {
     Home: HomeStackNavigatorParamList;
-    Feed: undefined;
-    Settings: undefined;
+    Bermudas: undefined;
+    Profile: undefined;
 };

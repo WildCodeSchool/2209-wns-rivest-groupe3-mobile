@@ -4,7 +4,7 @@ import { DetailsScreenRouteProp } from "../navigation/types";
 
 const BlogScreen = () => {
     const route = useRoute<DetailsScreenRouteProp>();
-    const name:String = route.params;
+    const name = route.params;
 
     return (
         <View style={styles.container}>
