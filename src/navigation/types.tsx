@@ -1,25 +1,25 @@
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { RouteProp } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import type { RouteProp } from '@react-navigation/native'
 
 export type HomeStackNavigatorParamList = {
-    Home: undefined;
-    Blog: {
-        name: string;
-    };
-};
+  Home: undefined
+  Blog: {
+    name: string
+  }
+}
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
-    HomeStackNavigatorParamList,
-    "Blog"
->;
+  HomeStackNavigatorParamList,
+  'Blog'
+>
 
 export type DetailsScreenRouteProp = RouteProp<
-    HomeStackNavigatorParamList,
-    "Blog"
->;
+  HomeStackNavigatorParamList,
+  'Blog'
+>
 
 export type BottomTabNavigatorParamList = {
-    Home: HomeStackNavigatorParamList;
-    Feed: undefined;
-    Settings: undefined;
-};
+  Profile: undefined
+  HomeStack: undefined
+  Bermudas: undefined
+}

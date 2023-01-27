@@ -1,19 +1,17 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from 'react-native'
 
 const ProfileScreen = () => {
-
-    return (
-        <View style={styles.container}>
-            <Text>Profile Section</Text>
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Text>Profile Section</Text>
+    </View>
+  )
 }
 
-export default ProfileScreen;
+export default ProfileScreen
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-
+  container: {
+    flex: 1,
+  },
+})
