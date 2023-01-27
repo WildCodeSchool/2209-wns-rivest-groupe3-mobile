@@ -1,13 +1,14 @@
-import { Text, View, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
-export default function BermudasScreen() {
-
+const BermudasScreen = () => {
     return (
         <View style={styles.container}>
-            <Text>Bermudas Section</Text>
+            <Text>Bermudas Screen</Text>
         </View>
-    )
-}
+    );
+};
+
+export default BermudasScreen;
 
 const styles = StyleSheet.create({
     container: {

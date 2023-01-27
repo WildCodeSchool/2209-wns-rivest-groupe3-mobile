@@ -1,32 +1,25 @@
-import type {
-    CompositeScreenProps,
-    NavigatorScreenParams,
-} from "@react-navigation/native";
-import type { StackScreenProps } from "@react-navigation/stack";
-import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RouteProp } from "@react-navigation/native";
 
-export type RootStackParamList = {
-    Home: NavigatorScreenParams<HomeTabParamList>;
-    PostDetails: { id: string };
-    NotFound: undefined;
+export type HomeStackNavigatorParamList = {
+    Home: undefined;
+    Blog: {
+        name: string;
+    };
 };
 
-export type RootStackScreenProps<T extends keyof RootStackParamList> =
-    StackScreenProps<RootStackParamList, T>;
+export type HomeScreenNavigationProp = NativeStackNavigationProp<
+    HomeStackNavigatorParamList,
+    "Blog"
+>;
 
-export type HomeTabParamList = {
-    Popular: undefined;
-    Latest: undefined;
+export type DetailsScreenRouteProp = RouteProp<
+    HomeStackNavigatorParamList,
+    "Blog"
+>;
+
+export type BottomTabNavigatorParamList = {
+    Home: HomeStackNavigatorParamList;
+    Feed: undefined;
+    Settings: undefined;
 };
-
-export type HomeTabScreenProps<T extends keyof HomeTabParamList> =
-    CompositeScreenProps<
-        BottomTabScreenProps<HomeTabParamList, T>,
-        RootStackScreenProps<keyof RootStackParamList>
-    >;
-
-declare global {
-    namespace ReactNavigation {
-        interface RootParamList extends RootStackParamList {}
-    }
-}
