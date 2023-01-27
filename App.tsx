@@ -13,25 +13,27 @@ export default function App() {
 
   interface TabBarIcon {
     icon: keyof typeof Ionicons.glyphMap
-    value: string
-    placeholder: string
-    onChangeText: (text: string) => void
-    secureTextEntry?: boolean
-    style: StyleProp<ViewStyle>
+    focused: boolean
+    color: string
+    // value: string
+    // placeholder: string
+    // onChangeText: (text: string) => void
+    // secureTextEntry?: boolean
+    // style: StyleProp<ViewStyle>
   }
 
     return (
 
         <NavigationContainer>
             <Tab.Navigator
-                screenOptions={({ route }) => ({
+                screenOptions={({ route }:  ) => ({
 
                     tabBarStyle: {  backgroundColor: "#282a36",
                                     height: 100,
                                     paddingTop: 20,
                                     paddingBottom: 20, },
 
-                    tabBarIcon: ({ focused, color }) => {
+                    tabBarIcon: ({ focused, color }: TabBarIcon) => {
                         let iconName;
                         if (route.name === "Profile") {
                             iconName = focused ? "person-circle" : "person-circle-outline";
@@ -41,7 +43,7 @@ export default function App() {
                             iconName = focused ? "videocam" : "videocam-outline";
                         }
                         return (
-                            <Ionicons: TabBarIcon name={iconName} color={color} />
+                            <Ionicons name={iconName} color={color} />
                         );
                     },
                     tabBarActiveTintColor: "#ff79c6",
