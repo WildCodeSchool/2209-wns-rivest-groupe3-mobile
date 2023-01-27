@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, Pressable, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenNavigationProp } from "../navigation/types";
 
-const DATA = [
+const BlogData = [
     {
         id: 1,
         name: "blog1",
@@ -37,24 +37,29 @@ const HomeScreen = () => {
                     })
                 }
             >
-                <Text>
-                    {item.name}
-                </Text>
-                <View
-                    style={{
-                        borderWidth: StyleSheet.hairlineWidth,
-                        borderColor: "#ccc",
-                    }}
-                />
+                <Text> {item.name} </Text>
+                <View style={styles.separator} />
             </Pressable>
         );
     };
 
     return (
-        <View style={{ flex: 1, paddingTop: 10 }}>
-            <FlatList data={DATA} renderItem={renderListItems} />
+        <View style={styles.container}>
+            <FlatList data={BlogData} renderItem={renderListItems} />
         </View>
     );
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: 20,
+        paddingLeft: 20,
+    },
+    separator: {
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: "#ccc",
+    },
+});
