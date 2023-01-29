@@ -13,7 +13,6 @@ export type HomeScreenNavigationProp = NativeStackNavigationProp<
   'Blog'
 >
 
-<<<<<<< HEAD
 export type DetailsScreenRouteProp = RouteProp<
   HomeStackNavigatorParamList,
   'Blog'
@@ -21,18 +20,6 @@ export type DetailsScreenRouteProp = RouteProp<
 
 export type BottomTabNavigatorParamList = {
   Profile: undefined
-  HomeStack: undefined
+  HomeStack: HomeScreenNavigationProp
   Bermudas: undefined
 }
-=======
-export type BlogScreenRouteProp = RouteProp<
-    HomeStackNavigatorParamList,
-    "Blog"
->;
-
-export type BottomTabNavigatorParamList = {
-    Home: HomeStackNavigatorParamList;
-    Bermudas: undefined;
-    Profile: undefined;
-};
->>>>>>> b303edb42ae765d3adc23ca6a0884afb078b28f5

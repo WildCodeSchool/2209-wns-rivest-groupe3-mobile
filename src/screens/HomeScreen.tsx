@@ -2,7 +2,12 @@ import { StyleSheet, View, Text, Pressable, FlatList } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { HomeScreenNavigationProp } from '../navigation/types'
 
-const BlogData = [
+type itemType = {
+  id: number
+  name: string
+}
+
+const BlogData: itemType[] = [
   {
     id: 1,
     name: 'blog1',
@@ -28,7 +33,7 @@ const BlogData = [
 const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>()
 
-  const renderListItems = ({ item }) => {
+  const renderListItems = ({ item }: { item: itemType }) => {
     return (
       <Pressable
         onPress={() =>
