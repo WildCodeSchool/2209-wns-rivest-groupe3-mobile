@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { useRoute } from '@react-navigation/native'
-import { DetailsScreenRouteProp } from '../navigation/types'
+import { BlogScreenRouteProp } from '../navigation/types'
 
 const BlogScreen = () => {
-  const route = useRoute<DetailsScreenRouteProp>()
+  const route = useRoute<BlogScreenRouteProp>()
   const { name } = route.params
 
   return (
