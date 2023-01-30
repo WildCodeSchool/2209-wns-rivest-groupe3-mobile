@@ -13,7 +13,7 @@ export type HomeScreenNavigationProp = NativeStackNavigationProp<
   'Blog'
 >
 
-export type BlogScreenRouteProp = RouteProp<
+export type DetailsScreenRouteProp = RouteProp<
   HomeStackNavigatorParamList,
   'Blog'
 >
