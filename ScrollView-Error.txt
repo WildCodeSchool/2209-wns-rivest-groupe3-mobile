@@ -1,0 +1,1 @@
+VirtualizedLists should nerver be nested inside plain ScrollViews with the same orirntation because it can break windowing and other functionnality - use another VirtualizedList-backend container instead
