@@ -87,7 +87,7 @@ const HomeScreen = () => {
         <View style={styles.cardContainer}>
           <View style={styles.imgContainer}>
             <Image
-              source={{ uri: cardImg }}
+              source={{ uri: item.img }}
               style={styles.image}
             />
             <Text style={styles.commentNumber}>{item.commentNumber}</Text>
@@ -119,12 +119,12 @@ const HomeScreen = () => {
         </ImageBackground>
       </View>
       <View style={styles.BlogListContainer}>
-        {/* <FlatList
+        <FlatList
           nestedScrollEnabled
           data={BlogDataList}
           renderItem={renderListItems}
-        /> */}
-        <Card />
+        />
+        {/* <Card /> */}
 
       </View>
     </View>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 
   homeContainer: {
     flex: 1,
-    backgroundColor: '#44475a',
+    backgroundColor: '#282a36',
   },
 
   // HeroBanner
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   heroBannerContainer: {
     display: 'flex',
     flex: 0.2,
-    backgroundColor: '#44475a',
+    backgroundColor: '#282a36',
     width: '100%',
     paddingBottom: 15,
   },
@@ -183,11 +183,10 @@ const styles = StyleSheet.create({
 
   BlogListContainer: {
     flex: 1,
-    backgroundColor: '#44475a',
+    backgroundColor: '#282a36',
   },
 
   cardContainer: {
-    backgroundColor: '#44475a',
     flex: 1,
     paddingLeft: 10,
     paddingRight: 10,

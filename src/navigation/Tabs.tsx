@@ -13,7 +13,7 @@ const BottomTabs = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarStyle: {
-          backgroundColor: '#282a36',
+          backgroundColor: '#292929',
           height: 100,
           paddingTop: 20,
           paddingBottom: 20,

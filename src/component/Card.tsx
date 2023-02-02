@@ -123,7 +123,7 @@ const Card = () => {
     },
 
     cardContainer: {
-      backgroundColor: '#44475a',
+      backgroundColor: '#282a36',
       flex: 1,
       paddingLeft: 10,
       paddingRight: 10,
