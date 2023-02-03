@@ -6,16 +6,44 @@ export type HomeStackNavigatorParamList = {
   Blog: {
     name: string
   }
+  BlogProfile: {
+    name: string
+  }
+  Article: {
+    name: string
+  }
 }
 
-export type HomeScreenNavigationProp = NativeStackNavigationProp<
+export type BlogScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackNavigatorParamList,
+  'Blog'
+>
+export type BlogProfileScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackNavigatorParamList,
+  'BlogProfile'
+>
+export type ArticleScreenNavigationProp = NativeStackNavigationProp<
+  HomeStackNavigatorParamList,
+  'Article'
+>
+
+export type HomeScreenNavigationProp = BlogScreenNavigationProp &
+  BlogProfileScreenNavigationProp &
+  ArticleScreenNavigationProp
+
+export type BlogScreenRouteProp = RouteProp<
   HomeStackNavigatorParamList,
   'Blog'
 >
 
-export type DetailsScreenRouteProp = RouteProp<
+export type BlogProfileScreenRouteProp = RouteProp<
   HomeStackNavigatorParamList,
-  'Blog'
+  'BlogProfile'
+>
+
+export type ArticleScreenRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'Article'
 >
 
 export type BottomTabNavigatorParamList = {

@@ -17,7 +17,7 @@ export type BlogDataType = {
 const BlogDataList: BlogDataType[] = [
   {
     id: 1,
-    name: 'blog1',
+    name: 'blog-1',
     title: 'Voyage en Thaïlande !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -27,7 +27,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 2,
-    name: 'blog2',
+    name: 'blog-2',
     title: 'Voyage en Inde !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -37,7 +37,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 3,
-    name: 'blog3',
+    name: 'blog-3',
     title: 'Voyage en Irlande !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -47,7 +47,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 4,
-    name: 'blog4',
+    name: 'blog-4',
     title: 'Voyage au Mexique !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -57,7 +57,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 5,
-    name: 'blog5',
+    name: 'blog-5',
     title: 'Voyage au Maroc !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -125,7 +125,6 @@ const HomeScreen = () => {
           renderItem={renderListItems}
         />
         {/* <Card /> */}
-
       </View>
     </View>
   )
@@ -134,14 +133,6 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-  safeAreaContainer: {
-    flex: 1,
-  },
-
-  scrollContainer: {
-    flex: 1,
-  },
-
   homeContainer: {
     flex: 1,
     backgroundColor: '#282a36',
@@ -154,7 +145,6 @@ const styles = StyleSheet.create({
     flex: 0.2,
     backgroundColor: '#282a36',
     width: '100%',
-    paddingBottom: 15,
   },
 
   heroBannerImg: {
@@ -187,15 +177,14 @@ const styles = StyleSheet.create({
   },
 
   cardContainer: {
-    flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10,
+    backgroundColor: '#282a36',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
   },
 
   imgContainer: {
     position: 'relative',
-    flex: 0.4,
   },
 
   bodyContainer: {
@@ -206,7 +195,7 @@ const styles = StyleSheet.create({
 
   image: {
     width: '100%',
-    height: '100%',
+    height: 100,
     resizeMode: 'cover',
     borderRadius: 10,
   },

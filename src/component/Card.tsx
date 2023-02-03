@@ -86,13 +86,6 @@ const Card = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>()
 
     return (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Blog', {
-            name: BlogDataList[0].name,
-          })
-        }
-      >
         <View style={styles.cardContainer}>
           <View style={styles.imgContainer}>
             <Image source={{ uri: cardImg }} style={styles.image} />
@@ -112,7 +105,6 @@ const Card = () => {
             </Text>
           </View>
         </View>
-      </TouchableOpacity>
     )
   }
 
@@ -124,15 +116,13 @@ const Card = () => {
 
     cardContainer: {
       backgroundColor: '#282a36',
-      flex: 1,
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingTop: 10,
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingTop: 20,
     },
 
     imgContainer: {
       position: 'relative',
-      flex: 0.4,
     },
 
     bodyContainer: {
@@ -143,7 +133,7 @@ const Card = () => {
 
     image: {
       width: '100%',
-      height: '100%',
+      height: 100,
       resizeMode: 'cover',
       borderRadius: 10,
     },
