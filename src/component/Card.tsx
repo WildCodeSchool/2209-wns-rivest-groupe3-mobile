@@ -1,16 +1,9 @@
-import { View, Image, StyleSheet, Text, Pressable, Button, TouchableOpacity } from 'react-native'
+import { View, Image, StyleSheet, Text } from 'react-native'
 import { Title } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { HomeScreenNavigationProp } from '../navigation/types'
 import { BlogDataType } from '../screens/HomeScreen'
-// import { useCallback } from 'react'
-// import { useFonts } from 'expo-font'
-// import * as SplashScreen from 'expo-splash-screen'
 
-// SplashScreen.preventAutoHideAsync()
-
-const heroBannerImg =
-  'https://images3.alphacoders.com/108/thumbbig-1082567.webp'
 const cardImg =
   'https://voyage-onirique.com/wp-content/uploads/2020/03/backiee-136872-landscape-1120x630.jpg'
 
@@ -22,7 +15,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Thaïlande', '#Voyage', '#Asie'],
+    tag: ['#Thaïlande', '#Voyage', '#Asie'],
     commentNumber: 6,
   },
   {
@@ -32,7 +25,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Inde', '#Voyage', '#Asie'],
+    tag: ['#Inde', '#Voyage', '#Asie'],
     commentNumber: 8,
   },
   {
@@ -42,7 +35,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Irlande', '#Voyage', '#Europe'],
+    tag: ['#Irlande', '#Voyage', '#Europe'],
     commentNumber: 3,
   },
   {
@@ -52,7 +45,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Mexique', '#Voyage', '#Amérique Centrale'],
+    tag: ['#Mexique', '#Voyage', '#Amérique Centrale'],
     commentNumber: 5,
   },
   {
@@ -62,7 +55,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Maroc', '#Voyage', '#Afrique'],
+    tag: ['#Maroc', '#Voyage', '#Afrique'],
     commentNumber: 12,
   },
 ]
@@ -85,104 +78,99 @@ const Card = () => {
 
   const navigation = useNavigation<HomeScreenNavigationProp>()
 
-    return (
-        <View style={styles.cardContainer}>
-          <View style={styles.imgContainer}>
-            <Image source={{ uri: cardImg }} style={styles.image} />
-            <Text style={styles.commentNumber}>
-              {BlogDataList[0].commentNumber}
-            </Text>
-          </View>
-          <View style={styles.bodyContainer}>
-            <Title style={styles.cardTitle}>{BlogDataList[0].title}</Title>
-            <View style={styles.themeList}>
-              <Text style={styles.theme}>{BlogDataList[0].theme[0]}</Text>
-              <Text style={styles.theme}>{BlogDataList[0].theme[1]}</Text>
-              <Text style={styles.theme}>{BlogDataList[0].theme[2]}</Text>
-            </View>
-            <Text style={styles.cardDescription}>
-              {BlogDataList[0].description}
-            </Text>
-          </View>
+  return (
+    <View style={styles.cardContainer}>
+      <View style={styles.imgContainer}>
+        <Image source={{ uri: cardImg }} style={styles.image} />
+        <Text style={styles.commentNumber}>
+          {BlogDataList[0].commentNumber}
+        </Text>
+      </View>
+      <View style={styles.bodyContainer}>
+        <Title style={styles.cardTitle}>{BlogDataList[0].title}</Title>
+        <View style={styles.tagList}>
+          <Text style={styles.tag}>{BlogDataList[0].tag[0]}</Text>
+          <Text style={styles.tag}>{BlogDataList[0].tag[1]}</Text>
+          <Text style={styles.tag}>{BlogDataList[0].tag[2]}</Text>
         </View>
-    )
-  }
+        <Text style={styles.cardDescription}>
+          {BlogDataList[0].description}
+        </Text>
+      </View>
+    </View>
+  )
+}
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-    },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
 
-    cardContainer: {
-      backgroundColor: '#282a36',
-      paddingLeft: 20,
-      paddingRight: 20,
-      paddingTop: 20,
-    },
+  cardContainer: {
+    backgroundColor: '#282a36',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+  },
 
-    imgContainer: {
-      position: 'relative',
-    },
+  imgContainer: {
+    position: 'relative',
+  },
 
-    bodyContainer: {
-      backgroundColor: 'white',
-      padding: 20,
-      borderRadius: 10,
-    },
+  bodyContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
 
-    image: {
-      width: '100%',
-      height: 100,
-      resizeMode: 'cover',
-      borderRadius: 10,
-    },
+  image: {
+    width: '100%',
+    height: 100,
+    resizeMode: 'cover',
+    borderRadius: 10,
+  },
 
-    commentNumber: {
-      fontFamily: 'Roboto',
-      position: 'absolute',
-      backgroundColor: 'rgba(98, 114, 164, 0.5)',
-      textOpacity: 1,
-      bottom: 0,
-      right: 0,
-      color: 'white',
-      paddingBottom: 8,
-      paddingRight: 10,
-      paddingLeft: 10,
-      paddingTop: 8,
-      borderRadius: 10,
-    },
+  commentNumber: {
+    position: 'absolute',
+    backgroundColor: 'rgba(98, 114, 164, 0.5)',
+    textOpacity: 1,
+    bottom: 0,
+    right: 0,
+    color: 'white',
+    paddingBottom: 8,
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingTop: 8,
+    borderRadius: 10,
+  },
 
-    cardTitle: {
-      fontFamily: 'Roboto',
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 
-    themeList: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginTop: 10,
-    },
+  tagList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 10,
+  },
 
-    theme: {
-      fontFamily: 'Roboto',
-      backgroundColor: 'rgba(98, 114, 164, 0.5)',
-      color: 'white',
-      borderRadius: 10,
-      marginRight: 5,
-      marginBottom: 5,
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingTop: 5,
-      paddingBottom: 5,
-    },
+  tag: {
+    backgroundColor: 'rgba(98, 114, 164, 0.5)',
+    color: 'white',
+    borderRadius: 10,
+    marginRight: 5,
+    marginBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
 
-    cardDescription: {
-      fontFamily: 'Roboto',
-      marginTop: 10,
-    },
-  })
-
+  cardDescription: {
+    marginTop: 10,
+  },
+})
 
 export default Card

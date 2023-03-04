@@ -1,7 +1,8 @@
 import React from 'react'
 import { Text, View, Image, StyleSheet } from 'react-native'
 
-const BlogProfileImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+const BlogProfileImg =
+  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
 
 const BlogProfile = () => {
   return (

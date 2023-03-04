@@ -2,16 +2,10 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
 
 export type HomeStackNavigatorParamList = {
-  Home: undefined
-  Blog: {
-    name: string
-  }
-  BlogProfile: {
-    name: string
-  }
-  Article: {
-    name: string
-  }
+  Home: any
+  Blog: { name: string }
+  Blogger: { name: string }
+  Article: { name: string }
 }
 
 export type BlogScreenNavigationProp = NativeStackNavigationProp<
@@ -20,7 +14,7 @@ export type BlogScreenNavigationProp = NativeStackNavigationProp<
 >
 export type BlogProfileScreenNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
-  'BlogProfile'
+  'Blogger'
 >
 export type ArticleScreenNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
@@ -31,14 +25,11 @@ export type HomeScreenNavigationProp = BlogScreenNavigationProp &
   BlogProfileScreenNavigationProp &
   ArticleScreenNavigationProp
 
-export type BlogScreenRouteProp = RouteProp<
-  HomeStackNavigatorParamList,
-  'Blog'
->
+export type BlogScreenRouteProp = RouteProp<HomeStackNavigatorParamList, 'Blog'>
 
 export type BlogProfileScreenRouteProp = RouteProp<
   HomeStackNavigatorParamList,
-  'BlogProfile'
+  'Blogger'
 >
 
 export type ArticleScreenRouteProp = RouteProp<

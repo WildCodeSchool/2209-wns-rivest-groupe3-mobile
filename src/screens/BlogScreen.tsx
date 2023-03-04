@@ -1,11 +1,16 @@
-import { View, Text, Image, StyleSheet, FlatList, Pressable } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  Pressable,
+} from 'react-native'
 import { Title } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native'
 import { BlogScreenRouteProp } from '../navigation/types'
 import { useNavigation } from '@react-navigation/native'
 import { HomeScreenNavigationProp } from '../navigation/types'
-
-
 
 export type ArticleDataType = {
   id: number
@@ -14,48 +19,48 @@ export type ArticleDataType = {
   description: string
 }
 
- const blogProfileImg =
-    'https://mobimg.b-cdn.net/v3/fetch/05/05eeb93a2e41734ecb6044146351f11e.jpeg?h=900&r=0.5'
+const blogProfileImg =
+  'https://mobimg.b-cdn.net/v3/fetch/05/05eeb93a2e41734ecb6044146351f11e.jpeg?h=900&r=0.5'
 
-  const articleImg = 'https://images7.alphacoders.com/115/1153508.jpg'
+const articleImg = 'https://images7.alphacoders.com/115/1153508.jpg'
 
-  const articleDataList: ArticleDataType[] = [
-    {
-      id: 1,
-      name: 'article-1',
-      img: 'https://placeimg.com/400/225/arch',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    },
-    {
-      id: 2,
-      name: 'article-2',
-      img: 'https://placeimg.com/400/225/arch',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    },
-    {
-      id: 3,
-      name: 'article-3',
-      img: 'https://placeimg.com/400/225/arch',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    },
-    {
-      id: 4,
-      name: 'article-4',
-      img: 'https://placeimg.com/400/225/arch',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisi',
-    },
-    {
-      id: 5,
-      name: 'article-5',
-      img: 'https://placeimg.com/400/225/arch',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    },
-  ]
+const articleDataList: ArticleDataType[] = [
+  {
+    id: 1,
+    name: 'article-1',
+    img: 'https://placeimg.com/400/225/arch',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
+  },
+  {
+    id: 2,
+    name: 'article-2',
+    img: 'https://placeimg.com/400/225/arch',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
+  },
+  {
+    id: 3,
+    name: 'article-3',
+    img: 'https://placeimg.com/400/225/arch',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
+  },
+  {
+    id: 4,
+    name: 'article-4',
+    img: 'https://placeimg.com/400/225/arch',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisi',
+  },
+  {
+    id: 5,
+    name: 'article-5',
+    img: 'https://placeimg.com/400/225/arch',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
+  },
+]
 
 const BlogScreen = () => {
   const route = useRoute<BlogScreenRouteProp>()
@@ -81,31 +86,31 @@ const BlogScreen = () => {
         </View>
       </Pressable>
     )
-}
+  }
 
-return (
-  <View style={main.container}>
-    <Pressable
+  return (
+    <View style={main.container}>
+      <Pressable
         onPress={() =>
           navigation.navigate('BlogProfile', {
             name: name,
           })
         }
       >
-      <View style={herobanner.container}>
-        <Image style={herobanner.blogImg} source={{ uri: blogProfileImg }} />
-        <Text style={herobanner.blogName}>{name}</Text>
+        <View style={herobanner.container}>
+          <Image style={herobanner.blogImg} source={{ uri: blogProfileImg }} />
+          <Text style={herobanner.blogName}>{name}</Text>
+        </View>
+      </Pressable>
+      <View style={article.listContainer}>
+        <FlatList
+          nestedScrollEnabled
+          data={articleDataList}
+          renderItem={renderListItems}
+        />
       </View>
-    </Pressable>
-    <View style={article.listContainer}>
-      <FlatList
-        nestedScrollEnabled
-        data={articleDataList}
-        renderItem={renderListItems}
-      />
     </View>
-  </View>
-)
+  )
 }
 
 export default BlogScreen
@@ -116,7 +121,6 @@ const main = StyleSheet.create({
     backgroundColor: '#282a36',
   },
 })
-
 
 const herobanner = StyleSheet.create({
   container: {
@@ -141,13 +145,12 @@ const herobanner = StyleSheet.create({
   },
 })
 
-
 const article = StyleSheet.create({
   container: {
     marginBottom: 30,
   },
 
-  listContainer : {
+  listContainer: {
     flex: 1,
     borderRadius: 10,
     paddingTop: 20,
@@ -161,7 +164,7 @@ const article = StyleSheet.create({
     // overflow: 'hidden',
   },
 
-  img : {
+  img: {
     width: '100%',
     height: 100,
     borderRadius: 10,
