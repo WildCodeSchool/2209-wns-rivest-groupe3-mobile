@@ -3,15 +3,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HomeStackNavigatorParamList } from './types'
 
 import HomeScreen from '../screens/HomeScreen'
-import DetailsScreen from '../screens/BlogScreen'
+import BlogScreen from '../screens/BlogScreen'
+import BlogProfileScreen from '../screens/BlogProfileScreen'
+import ArticleScreen from '../screens/ArticleScreen'
 
 const HomeStack = createNativeStackNavigator<HomeStackNavigatorParamList>()
 
 const HomeStackNavigator = () => {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Blog" component={DetailsScreen} />
+      <HomeStack.Screen name="Blog" component={BlogScreen} />
+      <HomeStack.Screen name="Blogger" component={BlogProfileScreen} />
+      <HomeStack.Screen name="Article" component={ArticleScreen} />
     </HomeStack.Navigator>
   )
 }

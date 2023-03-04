@@ -1,33 +1,16 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  Image,
-  FlatList,
-  Animated,
-} from 'react-native'
+import { View, Image, StyleSheet, Text } from 'react-native'
 import { Title } from 'react-native-paper'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { HomeScreenNavigationProp } from '../navigation/types'
-import { FlashList, ListRenderItemInfo } from '@shopify/flash-list'
-import { TabasColorTheme } from '../interfaces'
-import { useEffect, useRef } from 'react'
+import { BlogDataType } from '../screens/HomeScreen'
 
-export type BlogDataType = {
-  id: number
-  name: string
-  title: string
-  img: string
-  description: string
-  tag: string[]
-  commentNumber: number
-}
+const cardImg =
+  'https://voyage-onirique.com/wp-content/uploads/2020/03/backiee-136872-landscape-1120x630.jpg'
 
 const BlogDataList: BlogDataType[] = [
   {
     id: 1,
-    name: 'blog-1',
+    name: 'blog1',
     title: 'Voyage en Thaïlande !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -37,7 +20,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 2,
-    name: 'blog-2',
+    name: 'blog2',
     title: 'Voyage en Inde !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -47,7 +30,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 3,
-    name: 'blog-3',
+    name: 'blog3',
     title: 'Voyage en Irlande !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -57,7 +40,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 4,
-    name: 'blog-4',
+    name: 'blog4',
     title: 'Voyage au Mexique !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -67,7 +50,7 @@ const BlogDataList: BlogDataType[] = [
   },
   {
     id: 5,
-    name: 'blog-5',
+    name: 'blog5',
     title: 'Voyage au Maroc !',
     img: 'https://placeimg.com/400/225/arch',
     description:
@@ -77,86 +60,55 @@ const BlogDataList: BlogDataType[] = [
   },
 ]
 
-const FadeinCard = ({
-  item: { item, index },
-}: {
-  item: ListRenderItemInfo<BlogDataType>
-}) => {
+const Card = () => {
+  // const [fontsLoaded] = useFonts({
+  //   'Lobster-Regular': require('../assets/fonts/Lobster-Regular.ttf'),
+  //   'RobotoCondensed-Regular': require('../assets/fonts/RobotoCondensed-Regular.ttf'),
+  // })
+
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (fontsLoaded) {
+  //     await SplashScreen.hideAsync()
+  //   }
+  // }, [fontsLoaded])
+
+  // if (!fontsLoaded) {
+  //   return null
+  // }
+
   const navigation = useNavigation<HomeScreenNavigationProp>()
-  const { colors } = useTheme() as TabasColorTheme
-  const fadeAnim = useRef(new Animated.Value(0)).current
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: (index + 1) * 500,
-      useNativeDriver: true,
-    }).start()
-  }, [fadeAnim])
 
   return (
-    <Animated.View style={{ opacity: fadeAnim }}>
-      <Pressable
-        onPress={() =>
-          navigation.navigate('Blog', {
-            name: item.name,
-          })
-        }
-      >
-        <View style={styles.cardContainer}>
-          <View style={styles.imgContainer}>
-            <Image source={{ uri: item.img }} style={styles.image} />
-            <Text style={styles.commentNumber}>{item.commentNumber}</Text>
-          </View>
-          <View style={styles.bodyContainer}>
-            <Title style={{ ...styles.cardTitle, color: colors.highlight }}>
-              {item.title}
-            </Title>
-            <View style={styles.tagList}>
-              <Text style={styles.tag}>{item.tag[0]}</Text>
-              <Text style={styles.tag}>{item.tag[1]}</Text>
-              <Text style={styles.tag}>{item.tag[2]}</Text>
-            </View>
-            <Text style={{ ...styles.cardDescription, color: colors.text }}>
-              {item.description}
-            </Text>
-          </View>
+    <View style={styles.cardContainer}>
+      <View style={styles.imgContainer}>
+        <Image source={{ uri: cardImg }} style={styles.image} />
+        <Text style={styles.commentNumber}>
+          {BlogDataList[0].commentNumber}
+        </Text>
+      </View>
+      <View style={styles.bodyContainer}>
+        <Title style={styles.cardTitle}>{BlogDataList[0].title}</Title>
+        <View style={styles.tagList}>
+          <Text style={styles.tag}>{BlogDataList[0].tag[0]}</Text>
+          <Text style={styles.tag}>{BlogDataList[0].tag[1]}</Text>
+          <Text style={styles.tag}>{BlogDataList[0].tag[2]}</Text>
         </View>
-      </Pressable>
-    </Animated.View>
-  )
-}
-
-const HomeScreen = () => {
-  return (
-    <View style={styles.homeContainer}>
-      <View style={styles.BlogListContainer}>
-        <FlashList
-          data={BlogDataList}
-          refreshing={false}
-          estimatedItemSize={300}
-          renderItem={(item) => {
-            return <FadeinCard item={item} />
-          }}
-        />
+        <Text style={styles.cardDescription}>
+          {BlogDataList[0].description}
+        </Text>
       </View>
     </View>
   )
 }
 
-export default HomeScreen
-
 const styles = StyleSheet.create({
-  homeContainer: {
+  container: {
     flex: 1,
-  },
-  // BlogList
-
-  BlogListContainer: {
-    flex: 1,
-    paddingTop: 50,
+    backgroundColor: '#fff',
   },
 
   cardContainer: {
+    backgroundColor: '#282a36',
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,
@@ -167,6 +119,7 @@ const styles = StyleSheet.create({
   },
 
   bodyContainer: {
+    backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
   },
@@ -201,8 +154,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 10,
-
-    marginBottom: 5,
   },
 
   tag: {
@@ -210,6 +161,7 @@ const styles = StyleSheet.create({
     color: 'white',
     borderRadius: 10,
     marginRight: 5,
+    marginBottom: 5,
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
@@ -220,3 +172,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 })
+
+export default Card
