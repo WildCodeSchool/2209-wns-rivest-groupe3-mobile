@@ -1,8 +1,18 @@
-import { StyleSheet, View, Text, Pressable, Image, FlatList, ImageBackground } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  Image,
+  FlatList,
+  Animated,
+} from 'react-native'
 import { Title } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useTheme } from '@react-navigation/native'
 import { HomeScreenNavigationProp } from '../navigation/types'
-import Card from '../component/Card'
+import { FlashList, ListRenderItemInfo } from '@shopify/flash-list'
+import { TabasColorTheme } from '../interfaces'
+import { useEffect, useRef } from 'react'
 
 export type BlogDataType = {
   id: number
@@ -10,7 +20,7 @@ export type BlogDataType = {
   title: string
   img: string
   description: string
-  theme: string[]
+  tag: string[]
   commentNumber: number
 }
 
@@ -22,7 +32,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Thaïlande', '#Voyage', '#Asie'],
+    tag: ['#Thaïlande', '#Voyage', '#Asie'],
     commentNumber: 6,
   },
   {
@@ -32,7 +42,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Inde', '#Voyage', '#Asie'],
+    tag: ['#Inde', '#Voyage', '#Asie'],
     commentNumber: 8,
   },
   {
@@ -42,7 +52,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Irlande', '#Voyage', '#Europe'],
+    tag: ['#Irlande', '#Voyage', '#Europe'],
     commentNumber: 3,
   },
   {
@@ -52,7 +62,7 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Mexique', '#Voyage', '#Amérique Centrale'],
+    tag: ['#Mexique', '#Voyage', '#Amérique Centrale'],
     commentNumber: 5,
   },
   {
@@ -62,21 +72,29 @@ const BlogDataList: BlogDataType[] = [
     img: 'https://placeimg.com/400/225/arch',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl eget ultricies tincidunt, nisl nisl aliquet mauris, nec lacinia nunc nisl eget nunc. Sed tincidunt, nisl',
-    theme: ['#Maroc', '#Voyage', '#Afrique'],
+    tag: ['#Maroc', '#Voyage', '#Afrique'],
     commentNumber: 12,
   },
 ]
 
-const heroBannerImg =
-  'https://images3.alphacoders.com/108/thumbbig-1082567.webp'
-const cardImg =
-  'https://voyage-onirique.com/wp-content/uploads/2020/03/backiee-136872-landscape-1120x630.jpg'
-
-const HomeScreen = () => {
+const FadeinCard = ({
+  item: { item, index },
+}: {
+  item: ListRenderItemInfo<BlogDataType>
+}) => {
   const navigation = useNavigation<HomeScreenNavigationProp>()
+  const { colors } = useTheme() as TabasColorTheme
+  const fadeAnim = useRef(new Animated.Value(0)).current
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: (index + 1) * 500,
+      useNativeDriver: true,
+    }).start()
+  }, [fadeAnim])
 
-  const renderListItems = ({ item }: { item: BlogDataType }) => {
-    return (
+  return (
+    <Animated.View style={{ opacity: fadeAnim }}>
       <Pressable
         onPress={() =>
           navigation.navigate('Blog', {
@@ -86,45 +104,40 @@ const HomeScreen = () => {
       >
         <View style={styles.cardContainer}>
           <View style={styles.imgContainer}>
-            <Image
-              source={{ uri: item.img }}
-              style={styles.image}
-            />
+            <Image source={{ uri: item.img }} style={styles.image} />
             <Text style={styles.commentNumber}>{item.commentNumber}</Text>
           </View>
           <View style={styles.bodyContainer}>
-            <Title style={styles.cardTitle}>{item.title}</Title>
-            <View style={styles.themeList}>
-              <Text style={styles.theme}>{item.theme[0]}</Text>
-              <Text style={styles.theme}>{item.theme[1]}</Text>
-              <Text style={styles.theme}>{item.theme[2]}</Text>
+            <Title style={{ ...styles.cardTitle, color: colors.highlight }}>
+              {item.title}
+            </Title>
+            <View style={styles.tagList}>
+              <Text style={styles.tag}>{item.tag[0]}</Text>
+              <Text style={styles.tag}>{item.tag[1]}</Text>
+              <Text style={styles.tag}>{item.tag[2]}</Text>
             </View>
-            <Text style={styles.cardDescription}>{item.description}</Text>
+            <Text style={{ ...styles.cardDescription, color: colors.text }}>
+              {item.description}
+            </Text>
           </View>
         </View>
       </Pressable>
-    )
-  }
+    </Animated.View>
+  )
+}
 
+const HomeScreen = () => {
   return (
     <View style={styles.homeContainer}>
-      <View style={styles.heroBannerContainer}>
-        <ImageBackground
-          style={styles.heroBannerImg}
-          source={{ uri: heroBannerImg }}
-        >
-          <View style={styles.heroBannerTitleContainer}>
-            <Text style={styles.heroBannerTitle}>Blogs</Text>
-          </View>
-        </ImageBackground>
-      </View>
       <View style={styles.BlogListContainer}>
-        <FlatList
-          nestedScrollEnabled
+        <FlashList
           data={BlogDataList}
-          renderItem={renderListItems}
+          refreshing={false}
+          estimatedItemSize={300}
+          renderItem={(item) => {
+            return <FadeinCard item={item} />
+          }}
         />
-        {/* <Card /> */}
       </View>
     </View>
   )
@@ -135,49 +148,15 @@ export default HomeScreen
 const styles = StyleSheet.create({
   homeContainer: {
     flex: 1,
-    backgroundColor: '#282a36',
   },
-
-  // HeroBanner
-
-  heroBannerContainer: {
-    display: 'flex',
-    flex: 0.2,
-    backgroundColor: '#282a36',
-    width: '100%',
-  },
-
-  heroBannerImg: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: 100,
-  },
-
-  heroBannerTitleContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-
-  heroBannerTitle: {
-    color: 'white',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-
   // BlogList
 
   BlogListContainer: {
     flex: 1,
-    backgroundColor: '#282a36',
+    paddingTop: 50,
   },
 
   cardContainer: {
-    backgroundColor: '#282a36',
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,
@@ -188,7 +167,6 @@ const styles = StyleSheet.create({
   },
 
   bodyContainer: {
-    backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
   },
@@ -201,7 +179,6 @@ const styles = StyleSheet.create({
   },
 
   commentNumber: {
-    fontFamily: 'Roboto',
     position: 'absolute',
     backgroundColor: 'rgba(98, 114, 164, 0.5)',
     textOpacity: 1,
@@ -216,24 +193,23 @@ const styles = StyleSheet.create({
   },
 
   cardTitle: {
-    fontFamily: 'Roboto',
     fontSize: 20,
     fontWeight: 'bold',
   },
 
-  themeList: {
+  tagList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 10,
+
+    marginBottom: 5,
   },
 
-  theme: {
-    fontFamily: 'Roboto',
+  tag: {
     backgroundColor: 'rgba(98, 114, 164, 0.5)',
     color: 'white',
     borderRadius: 10,
     marginRight: 5,
-    marginBottom: 5,
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
@@ -241,8 +217,6 @@ const styles = StyleSheet.create({
   },
 
   cardDescription: {
-    fontFamily: 'Roboto',
     marginTop: 10,
   },
 })
-
