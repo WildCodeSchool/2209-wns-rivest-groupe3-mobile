@@ -19,7 +19,7 @@ const TabasLightTheme: TabasColorTheme = {
 const TabasDarkTheme: TabasColorTheme = {
   dark: true,
   colors: {
-    primary: 'rgb(255, 45, 85)',
+    primary: '#D5235D',
     highlight: '#34A0B4',
     background: '#0B2534',
     card: 'rgb(255, 255, 255)',
