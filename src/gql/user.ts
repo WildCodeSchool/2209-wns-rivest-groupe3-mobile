@@ -15,9 +15,9 @@ export const GET_USER = gql`
       lastName
       firstName
       description
+      avatar
       createdAt
       city
-      avatar
     }
   }
 `
