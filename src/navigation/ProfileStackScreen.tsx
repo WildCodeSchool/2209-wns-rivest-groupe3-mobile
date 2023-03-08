@@ -4,15 +4,15 @@ import { ProfileStackNavigatorParamList } from './types'
 import LoginScreen from '../screens/LoginScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import RegisterScreen from '../screens/RegisterScreen'
-import { useEffect } from 'react'
+import { useContext } from 'react'
+import { IUserContext, UserContext } from '../contexts/UserContext'
 
 const ProfileStack =
   createNativeStackNavigator<ProfileStackNavigatorParamList>()
 
 const ProfileStackScreen = () => {
-  const userIsConnected = false
-
-  if (userIsConnected) {
+  const { user } = useContext<IUserContext>(UserContext)
+  if (user) {
     return <ProfileScreen />
   }
 

@@ -4,8 +4,6 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
 } from 'react-native'
 import { Link, useTheme } from '@react-navigation/native'
@@ -93,7 +91,7 @@ const RegisterScreen = () => {
                 borderColor: colors.highlight,
               }}
               placeholder="Pseudo"
-              onChangeText={(newText) => setEmail(newText)}
+              onChangeText={(newText) => setNickname(newText)}
               defaultValue={nickname}
               autoCorrect={false}
               autoComplete={'username-new'}
@@ -110,7 +108,7 @@ const RegisterScreen = () => {
             <Pressable
               onPress={login}
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.highlight,
                 padding: 10,
                 paddingHorizontal: 20,
                 borderRadius: 6,
@@ -118,7 +116,11 @@ const RegisterScreen = () => {
               }}
             >
               <Text
-                style={{ color: '#f8f8f2', fontWeight: 'bold', fontSize: 18 }}
+                style={{
+                  color: colors.primary,
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                }}
               >
                 ENREGISTRER
               </Text>

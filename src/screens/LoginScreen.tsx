@@ -3,24 +3,51 @@ import {
   View,
   StyleSheet,
   TextInput,
-  Button,
   Pressable,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native'
 import { Link, useTheme } from '@react-navigation/native'
 import { TabasColorTheme } from '../interfaces'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { GET_TOKEN } from '../gql/user'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { IUser, IUserContext, UserContext } from '../contexts/UserContext'
 
 const LoginScreen = () => {
-  const { colors } = useTheme() as TabasColorTheme
+  const { colors, fonts } = useTheme() as TabasColorTheme
+  const { setUser } = useContext<IUserContext>(UserContext)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loadToken] = useMutation(GET_TOKEN)
 
   const login = async () => {
-    console.log('login')
+    loadToken({
+      variables: {
+        email,
+        password,
+      },
+    })
+      .then(async (res) => {
+        const { user, token } = res.data.login
+        await AsyncStorage.setItem('token', token)
+        const localUser = {
+          id: user.id,
+          nickname: user.nickname,
+          avatar: user.avatar,
+        } as IUser
+        await AsyncStorage.setItem('loggedUser', JSON.stringify(localUser))
+        setUser(localUser)
+      })
+      .catch((error) => {
+        console.error(error)
+        Alert.alert('Error', 'Something went wrong')
+      })
   }
 
   return (
@@ -36,8 +63,9 @@ const LoginScreen = () => {
             <Text
               style={{
                 color: colors.text,
+                fontFamily: fonts.title,
                 fontWeight: 'bold',
-                fontSize: 20,
+                fontSize: 30,
               }}
             >
               Connexion
@@ -90,7 +118,7 @@ const LoginScreen = () => {
               <Pressable
                 onPress={login}
                 style={{
-                  backgroundColor: colors.primary,
+                  backgroundColor: colors.highlight,
                   padding: 10,
                   paddingHorizontal: 20,
                   borderRadius: 6,
@@ -99,7 +127,7 @@ const LoginScreen = () => {
               >
                 <Text
                   style={{
-                    color: '#f8f8f2',
+                    color: colors.primary,
                     fontWeight: 'bold',
                     fontSize: 18,
                   }}
