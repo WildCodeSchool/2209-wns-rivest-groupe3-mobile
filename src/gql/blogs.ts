@@ -12,6 +12,7 @@ export const GET_ALL_BLOGS_FOR_DISCOVER = gql`
       user {
         id
         nickname
+        avatar
       }
     }
   }

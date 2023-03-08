@@ -25,9 +25,13 @@ export type BlogDataType = {
   description?: string
   tag?: string[]
   commentNumber?: number
+  user: {
+    nickname: string
+    avatar: string
+  }
 }
 
-const FadeinCard = ({
+const FadeinBlogCard = ({
   item: { item, index },
 }: {
   item: ListRenderItemInfo<BlogDataType>
@@ -43,7 +47,6 @@ const FadeinCard = ({
       useNativeDriver: true,
     }).start()
   }, [fadeAnim])
-
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <Pressable
@@ -54,6 +57,25 @@ const FadeinCard = ({
         }
       >
         <View style={styles.cardContainer}>
+          <View style={styles.avatarContainer}>
+            <Image
+              source={{
+                uri: item.user.avatar
+                  ? IMAGES_SERVICE_URL + item.user.avatar
+                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+              }}
+              style={styles.avatar}
+            />
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: colors.text,
+                alignSelf: 'center',
+              }}
+            >
+              {item.user.nickname}
+            </Text>
+          </View>
           <View style={styles.imgContainer}>
             <Image
               source={
@@ -63,7 +85,9 @@ const FadeinCard = ({
               }
               style={styles.image}
             />
-            <Text style={styles.commentNumber}>{item.commentNumber}</Text>
+            {item.commentNumber && (
+              <Text style={styles.commentNumber}>{item.commentNumber}</Text>
+            )}
           </View>
           <View style={styles.bodyContainer}>
             <Title
@@ -148,7 +172,7 @@ const HomeScreen = () => {
             await refetch()
           }}
           renderItem={(item: ListRenderItemInfo<BlogDataType>) => {
-            return <FadeinCard item={item} />
+            return <FadeinBlogCard item={item} />
           }}
         />
       </View>
@@ -170,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   cardContainer: {
-    paddingTop: 20,
+    marginBottom: 30,
   },
 
   imgContainer: {
@@ -180,6 +204,18 @@ const styles = StyleSheet.create({
   bodyContainer: {
     padding: 20,
     borderRadius: 10,
+  },
+  avatarContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingStart: 15,
+    marginBottom: 15,
+    gap: 15,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
   },
 
   image: {
