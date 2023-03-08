@@ -142,9 +142,29 @@ const HomeScreen = () => {
       <View style={styles.homeContainer}>
         <View
           style={{
-            ...styles.BlogListContainer,
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Title
+            style={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              color: colors.text,
+              fontFamily: fonts.title,
+              fontSize: 40,
+              lineHeight: 40,
+            }}
+          >
+            Tabas.blog
+          </Title>
+        </View>
+        <View
+          style={{
+            padding: 0,
             justifyContent: 'center',
             alignItems: 'center',
+            flex: 7,
           }}
         >
           <Title
@@ -163,6 +183,25 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.homeContainer}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Title
+          style={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+            color: colors.text,
+            fontFamily: fonts.title,
+            fontSize: 40,
+            lineHeight: 40,
+          }}
+        >
+          Tabas.blog
+        </Title>
+      </View>
       <View style={styles.BlogListContainer}>
         <FlashList
           data={blogs}
@@ -189,8 +228,7 @@ const styles = StyleSheet.create({
 
   // BlogList
   BlogListContainer: {
-    flex: 1,
-    paddingTop: 50,
+    flex: 7,
   },
 
   cardContainer: {
@@ -222,7 +260,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     resizeMode: 'cover',
-    borderRadius: 10,
   },
 
   commentNumber: {
