@@ -4,4 +4,8 @@ export type TabasColorTheme = {
   colors: {
     highlight: string
   }
+  fonts: {
+    title: string
+    default: string
+  }
 } & Theme

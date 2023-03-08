@@ -92,7 +92,7 @@ const BlogScreen = () => {
     <View style={main.container}>
       <Pressable
         onPress={() =>
-          navigation.navigate('BlogProfile', {
+          navigation.navigate('Blogger', {
             name: name,
           })
         }
