@@ -8,7 +8,8 @@ import {
   createHttpLink,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { API_URL } from '@env'
+import Constants from 'expo-constants'
+import { UserProvider } from './src/contexts/UserContext'
 import {
   useFonts,
   RobotoCondensed_300Light,
@@ -27,7 +28,7 @@ const TabasLightTheme: TabasColorTheme = {
     highlight: '#34A0B4',
     card: 'rgb(255, 255, 255)',
     text: '#0B2534',
-    border: 'rgb(199, 199, 204)',
+    border: 'hsl(202, 65%, 90%))',
     notification: 'rgb(255, 69, 58)',
   },
   fonts: {
@@ -38,12 +39,12 @@ const TabasLightTheme: TabasColorTheme = {
 const TabasDarkTheme: TabasColorTheme = {
   dark: true,
   colors: {
-    primary: 'rgb(255, 45, 85)',
+    primary: '#f8f8f2',
     highlight: '#34A0B4',
     background: '#0B2534',
     card: 'rgb(255, 255, 255)',
     text: '#f8f8f2',
-    border: 'rgb(199, 199, 204)',
+    border: 'hsl(202, 65%, 16%)',
     notification: 'rgb(255, 69, 58)',
   },
   fonts: {
@@ -51,6 +52,8 @@ const TabasDarkTheme: TabasColorTheme = {
     default: 'RobotoCondensed_400Regular',
   },
 }
+
+const API_URL = Constants.expoConfig?.extra?.apiUrl || ''
 
 const httpLink = createHttpLink({
   uri: API_URL,
@@ -93,8 +96,12 @@ export default function App() {
       <NavigationContainer
         theme={scheme === 'dark' ? TabasDarkTheme : TabasLightTheme}
       >
-        <BottomTabs />
+        <UserProvider>
+          <BottomTabs />
+        </UserProvider>
       </NavigationContainer>
     </ApolloProvider>
   )
 }
+
+// http://localhost:8000/users/29d39df2-ed43-46f2-945d-20f8e75c59ad/blogs/558efe15-5cfc-4c37-9c1a-2e536dbf7c92/covers/1677763049466-tabasblog-logopng

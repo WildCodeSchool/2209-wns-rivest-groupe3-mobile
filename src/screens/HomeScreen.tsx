@@ -12,10 +12,12 @@ import { useNavigation, useTheme } from '@react-navigation/native'
 import { useQuery } from '@apollo/client'
 import { FlashList, ListRenderItemInfo } from '@shopify/flash-list'
 import { Title } from 'react-native-paper'
-import { IMAGES_SERVICE_URL } from '@env'
+import Constants from 'expo-constants'
 import { HomeScreenNavigationProp } from '../navigation/types'
 import { TabasColorTheme } from '../interfaces'
 import { GET_ALL_BLOGS_FOR_DISCOVER } from '../gql/blogs'
+
+const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
 export type BlogDataType = {
   id: number
@@ -47,6 +49,8 @@ const FadeinBlogCard = ({
       useNativeDriver: true,
     }).start()
   }, [fadeAnim])
+  console.log({ cover: item.coverUrl })
+
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <Pressable

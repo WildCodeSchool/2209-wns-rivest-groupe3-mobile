@@ -2,10 +2,16 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
 
 export type HomeStackNavigatorParamList = {
-  Home: any
+  Home: { name: string }
   Blog: { name: string }
   Blogger: { name: string }
   Article: { name: string }
+}
+
+export type ProfileStackNavigatorParamList = {
+  Login: { name: string }
+  Profile: { name: string }
+  Register: { name: string }
 }
 
 export type BlogScreenNavigationProp = NativeStackNavigationProp<
@@ -38,7 +44,7 @@ export type ArticleScreenRouteProp = RouteProp<
 >
 
 export type BottomTabNavigatorParamList = {
-  Profile: undefined
+  ProfileStack: ProfileStackNavigatorParamList
   HomeStack: HomeScreenNavigationProp
   Bermudas: undefined
 }
