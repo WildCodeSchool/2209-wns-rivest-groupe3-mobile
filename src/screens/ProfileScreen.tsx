@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { IMAGES_SERVICE_URL } from '@env'
+import Constants from 'expo-constants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useTheme } from '@react-navigation/native'
 import { useContext } from 'react'
@@ -14,6 +14,8 @@ import {
 import { IUser, IUserContext, UserContext } from '../contexts/UserContext'
 import { GET_USER } from '../gql/user'
 import { TabasColorTheme } from '../interfaces'
+
+const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
 const ProfileScreen = () => {
   const { user, setUser } = useContext<IUserContext>(UserContext)

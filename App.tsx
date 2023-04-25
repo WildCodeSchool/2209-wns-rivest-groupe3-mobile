@@ -8,7 +8,7 @@ import {
   createHttpLink,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { API_URL } from '@env'
+import Constants from 'expo-constants'
 import { UserProvider } from './src/contexts/UserContext'
 import {
   useFonts,
@@ -52,6 +52,8 @@ const TabasDarkTheme: TabasColorTheme = {
     default: 'RobotoCondensed_400Regular',
   },
 }
+
+const API_URL = Constants.expoConfig?.extra?.apiUrl || ''
 
 const httpLink = createHttpLink({
   uri: API_URL,
@@ -101,3 +103,5 @@ export default function App() {
     </ApolloProvider>
   )
 }
+
+// http://localhost:8000/users/29d39df2-ed43-46f2-945d-20f8e75c59ad/blogs/558efe15-5cfc-4c37-9c1a-2e536dbf7c92/covers/1677763049466-tabasblog-logopng
