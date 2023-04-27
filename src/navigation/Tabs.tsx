@@ -3,13 +3,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomTabNavigatorParamList } from './types'
 import HomeStackNavigator from './HomeStack'
 import BermudasScreen from '../screens/BermudasScreen'
-import ProfileScreen from '../screens/ProfileScreen'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { TabasColorTheme } from '../interfaces'
+import ProfileStackScreen from './ProfileStackScreen'
 
 const BottomTabs = () => {
   const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>()
@@ -30,7 +30,7 @@ const BottomTabs = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName: keyof typeof Ionicons.glyphMap = 'person'
 
-            if (route.name === 'Profile') {
+            if (route.name === 'ProfileStack') {
               iconName = focused ? 'person' : 'person-outline'
             } else if (route.name === 'HomeStack') {
               iconName = focused ? 'home' : 'home-outline'
@@ -44,7 +44,7 @@ const BottomTabs = () => {
         })}
       >
         <Tab.Screen name="HomeStack" component={HomeStackNavigator} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="ProfileStack" component={ProfileStackScreen} />
         <Tab.Screen name="Bermudas" component={BermudasScreen} />
       </Tab.Navigator>
     </SafeAreaView>
@@ -53,7 +53,6 @@ const BottomTabs = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0B2534',
   },
 })
 
