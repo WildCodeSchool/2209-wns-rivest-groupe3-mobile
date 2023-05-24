@@ -16,6 +16,7 @@ import Constants from 'expo-constants'
 import { HomeScreenNavigationProp } from '../navigation/types'
 import { TabasColorTheme } from '../interfaces'
 import { GET_ALL_BLOGS_FOR_DISCOVER } from '../gql/blogs'
+import { ArticleDataType } from './BlogScreen'
 
 const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
@@ -31,6 +32,7 @@ export type BlogDataType = {
     nickname: string
     avatar: string
   }
+  articles?: ArticleDataType[]
 }
 
 const FadeinBlogCard = ({
@@ -49,14 +51,13 @@ const FadeinBlogCard = ({
       useNativeDriver: true,
     }).start()
   }, [fadeAnim])
-  console.log({ cover: item.coverUrl })
 
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <Pressable
         onPress={() =>
           navigation.navigate('Blog', {
-            name: item.name,
+            slug: item.slug,
           })
         }
       >
@@ -210,7 +211,7 @@ const HomeScreen = () => {
         <FlashList
           data={blogs}
           refreshing={false}
-          estimatedItemSize={300}
+          estimatedItemSize={10}
           onRefresh={async () => {
             await refetch()
           }}
