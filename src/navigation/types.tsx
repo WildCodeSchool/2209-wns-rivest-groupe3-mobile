@@ -3,7 +3,7 @@ import type { RouteProp } from '@react-navigation/native'
 
 export type HomeStackNavigatorParamList = {
   Home: { name: string }
-  Blog: { name: string }
+  Blog: { slug: string }
   Blogger: { name: string }
   Article: { name: string }
 }
