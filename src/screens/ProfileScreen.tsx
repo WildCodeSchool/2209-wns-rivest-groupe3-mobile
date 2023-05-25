@@ -10,6 +10,7 @@ import {
   Image,
   ScrollView,
   Pressable,
+  RefreshControl,
 } from 'react-native'
 import { IUser, IUserContext, UserContext } from '../contexts/UserContext'
 import { GET_USER } from '../gql/user'
@@ -27,7 +28,7 @@ const ProfileScreen = () => {
     await removeItemFromStorage('token')
     setUser(null)
   }
-  const { data, loading, error } = useQuery(GET_USER, {
+  const { data, loading, error, refetch } = useQuery(GET_USER, {
     variables: {
       getOneUserId: user?.id,
     },
@@ -45,8 +46,12 @@ const ProfileScreen = () => {
   }
 
   const { getOneUser: userData }: { getOneUser: IUser } = data
+
   return (
-    <ScrollView style={{ minHeight: '100%' }}>
+    <ScrollView
+      style={{ minHeight: '100%' }}
+      refreshControl={<RefreshControl refreshing={false} onRefresh={refetch} />}
+    >
       <View style={styles.container}>
         <View>
           <Image
@@ -73,7 +78,7 @@ const ProfileScreen = () => {
         >
           <View style={styles.detailLine}>
             <Text style={{ ...styles.detailHeader, color: colors.text }}>
-              First Name
+              Prénom
             </Text>
             <View
               style={{
@@ -88,13 +93,13 @@ const ProfileScreen = () => {
                   opacity: userData.firstName ? 1 : 0.2,
                 }}
               >
-                {userData.firstName ? userData.firstName : 'First Name'}
+                {userData.firstName ? userData.firstName : 'Prénom'}
               </Text>
             </View>
           </View>
           <View style={styles.detailLine}>
             <Text style={{ ...styles.detailHeader, color: colors.text }}>
-              Last Name
+              Nom
             </Text>
             <View
               style={{
@@ -109,7 +114,7 @@ const ProfileScreen = () => {
                   opacity: userData.lastName ? 1 : 0.2,
                 }}
               >
-                {userData.lastName ? userData.lastName : 'Last Name'}
+                {userData.lastName ? userData.lastName : 'Nom'}
               </Text>
             </View>
           </View>
@@ -136,7 +141,7 @@ const ProfileScreen = () => {
           </View>
           <View style={styles.detailLine}>
             <Text style={{ ...styles.detailHeader, color: colors.text }}>
-              Description
+              Présentation
             </Text>
             <View
               style={{
@@ -151,7 +156,28 @@ const ProfileScreen = () => {
                   opacity: userData.description ? 1 : 0.2,
                 }}
               >
-                {userData.description ? userData.description : 'Description'}
+                {userData.description ? userData.description : 'Présentation'}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.detailLine}>
+            <Text style={{ ...styles.detailHeader, color: colors.text }}>
+              Email
+            </Text>
+            <View
+              style={{
+                ...styles.detailData,
+                borderBottomWidth: 1,
+                borderBottomColor: colors.highlight,
+              }}
+            >
+              <Text
+                style={{
+                  color: colors.text,
+                  opacity: userData.email ? 1 : 0.2,
+                }}
+              >
+                {userData.email ? userData.email : 'Email'}
               </Text>
             </View>
           </View>
@@ -211,7 +237,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   detailHeader: {
-    width: 80,
+    width: 100,
   },
   detailData: {
     flex: 1,
