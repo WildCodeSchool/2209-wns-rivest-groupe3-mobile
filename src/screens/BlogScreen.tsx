@@ -7,7 +7,7 @@ import {
   Animated,
   ActivityIndicator,
   ScrollView,
-  SafeAreaView,
+  RefreshControl,
 } from 'react-native'
 import { useEffect, useRef } from 'react'
 import { useRoute, useTheme } from '@react-navigation/native'
@@ -71,9 +71,11 @@ export type ArticleDataType = {
 const FadeinArticleCard = ({
   item,
   index,
+  blogSlug,
 }: {
   item: ArticleDataType
   index: number
+  blogSlug: string
 }) => {
   const navigation = useNavigation<HomeScreenNavigationProp>()
   const { colors, fonts } = useTheme() as TabasColorTheme
@@ -88,16 +90,13 @@ const FadeinArticleCard = ({
   }, [fadeAnim])
 
   return (
-    <Animated.View
-      style={{ opacity: fadeAnim, marginBottom: 20 }}
-      key={item.id}
-    >
+    <Animated.View style={{ opacity: fadeAnim, marginBottom: 20 }}>
       <Pressable
-        onPress={
-          () => console.log('navigate')
-          // navigation.navigate('Blog', {
-          //   name: item.name,
-          // })
+        onPress={() =>
+          navigation.navigate('Article', {
+            slug: item.slug,
+            blogSlug,
+          })
         }
       >
         <View>
@@ -156,6 +155,7 @@ const BlogScreen = () => {
   const { slug } = route.params
   const { data, error, loading, refetch } = useQuery(GET_ONE_BLOG, {
     variables: { slug },
+    fetchPolicy: 'cache-and-network',
   })
   const insets = useSafeAreaInsets()
 
@@ -171,54 +171,12 @@ const BlogScreen = () => {
   }
   const { getBlog: blog }: { getBlog: BlogDataType } = data
 
-  // if (articles.length < 1) {
-  //   return (
-  //     <View style={main.container}>
-  //       <View
-  //         style={{
-  //           flex: 1,
-  //           justifyContent: 'flex-end',
-  //         }}
-  //       >
-  //         <Title
-  //           style={{
-  //             fontWeight: 'bold',
-  //             textAlign: 'center',
-  //             color: colors.text,
-  //             fontFamily: fonts.title,
-  //             fontSize: 40,
-  //             lineHeight: 40,
-  //           }}
-  //         >
-  //           Blog title
-  //         </Title>
-  //       </View>
-  //       <View
-  //         style={{
-  //           padding: 0,
-  //           justifyContent: 'center',
-  //           alignItems: 'center',
-  //           flex: 7,
-  //         }}
-  //       >
-  //         <Title
-  //           style={{
-  //             color: colors.highlight,
-  //             fontFamily: fonts.title,
-  //           }}
-  //         >
-  //           Aucun blog trouvé...
-  //         </Title>
-  //       </View>
-  //     </View>
-  //   )
-  // }
-
   return (
     <ScrollView
       style={main.container}
       stickyHeaderIndices={[1]}
       showsVerticalScrollIndicator={false}
+      refreshControl={<RefreshControl refreshing={false} onRefresh={refetch} />}
     >
       <View style={herobanner.container}>
         <Image
@@ -264,9 +222,28 @@ const BlogScreen = () => {
       </View>
 
       <View>
-        {blog.articles?.map((item, index) => (
-          <FadeinArticleCard item={item} index={index} />
-        ))}
+        {blog.articles?.length ? (
+          blog.articles?.map((item, index) => (
+            <FadeinArticleCard
+              item={item}
+              index={index}
+              key={item.id}
+              blogSlug={blog.slug}
+            />
+          ))
+        ) : (
+          <Text
+            style={{
+              textAlign: 'center',
+              color: colors.text,
+              fontFamily: fonts.default,
+              fontSize: 16,
+              paddingBottom: -30,
+            }}
+          >
+            Aucun article dans ce blog...
+          </Text>
+        )}
       </View>
     </ScrollView>
   )

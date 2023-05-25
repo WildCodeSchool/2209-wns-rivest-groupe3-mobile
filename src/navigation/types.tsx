@@ -5,7 +5,7 @@ export type HomeStackNavigatorParamList = {
   Home: { name: string }
   Blog: { slug: string }
   Blogger: { name: string }
-  Article: { name: string }
+  Article: { slug: string; blogSlug: string }
 }
 
 export type ProfileStackNavigatorParamList = {
