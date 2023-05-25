@@ -14,14 +14,16 @@ import {
 import { IUser, IUserContext, UserContext } from '../contexts/UserContext'
 import { GET_USER } from '../gql/user'
 import { TabasColorTheme } from '../interfaces'
+import removeItemFromStorage from '../utils/removeItemFromAsyncStorage'
 
 const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
 const ProfileScreen = () => {
   const { user, setUser } = useContext<IUserContext>(UserContext)
   const { colors } = useTheme() as TabasColorTheme
-  const logut = async () => {
-    await AsyncStorage.removeItem('loggedUser')
+  const logout = async () => {
+    await removeItemFromStorage('loggedUser')
+    await removeItemFromStorage('token')
     setUser(null)
   }
   const { data, loading, error } = useQuery(GET_USER, {
@@ -160,7 +162,7 @@ const ProfileScreen = () => {
       </View>
       <View style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
         <Pressable
-          onPress={logut}
+          onPress={logout}
           style={{
             backgroundColor: colors.notification,
             padding: 10,

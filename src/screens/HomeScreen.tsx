@@ -128,7 +128,10 @@ const FadeinBlogCard = ({
 }
 
 const HomeScreen = () => {
-  const { data, error, loading, refetch } = useQuery(GET_ALL_BLOGS_FOR_DISCOVER)
+  const { data, error, loading, refetch } = useQuery(
+    GET_ALL_BLOGS_FOR_DISCOVER,
+    { fetchPolicy: 'cache-and-network' }
+  )
   const { colors, fonts } = useTheme() as TabasColorTheme
   if (loading)
     return (
