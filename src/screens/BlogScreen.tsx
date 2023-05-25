@@ -24,6 +24,7 @@ import { GET_ONE_BLOG } from '../gql/blogs'
 import { BlogDataType } from './HomeScreen'
 import outputData from '../utils/ouputContentBlocks'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Error from '../component/Error'
 
 const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
@@ -166,8 +167,7 @@ const BlogScreen = () => {
       </View>
     )
   if (error) {
-    console.error({ error })
-    return null
+    return <Error error={error} />
   }
   const { getBlog: blog }: { getBlog: BlogDataType } = data
 

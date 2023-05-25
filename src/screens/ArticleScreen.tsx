@@ -17,6 +17,7 @@ import { GET_ONE_ARTICLE } from '../gql/articles'
 import outputData from '../utils/ouputContentBlocks'
 import { ArticleDataType } from './BlogScreen'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Error from '../component/Error'
 
 const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
@@ -37,8 +38,7 @@ const ArticleScreen = () => {
       </View>
     )
   if (error) {
-    console.error({ error })
-    return null
+    return <Error error={error} />
   }
   const { getOneArticle: article }: { getOneArticle: ArticleDataType } = data
 

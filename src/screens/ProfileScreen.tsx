@@ -15,6 +15,7 @@ import { IUser, IUserContext, UserContext } from '../contexts/UserContext'
 import { GET_USER } from '../gql/user'
 import { TabasColorTheme } from '../interfaces'
 import removeItemFromStorage from '../utils/removeItemFromAsyncStorage'
+import Error from '../component/Error'
 
 const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
@@ -40,11 +41,7 @@ const ProfileScreen = () => {
   }
 
   if (error) {
-    return (
-      <View style={styles.container}>
-        <Text>Error...</Text>
-      </View>
-    )
+    return <Error error={error} />
   }
 
   const { getOneUser: userData }: { getOneUser: IUser } = data

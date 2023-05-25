@@ -17,6 +17,7 @@ import { HomeScreenNavigationProp } from '../navigation/types'
 import { TabasColorTheme } from '../interfaces'
 import { GET_ALL_BLOGS_FOR_DISCOVER } from '../gql/blogs'
 import { ArticleDataType } from './BlogScreen'
+import Error from '../component/Error'
 
 const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
@@ -140,8 +141,7 @@ const HomeScreen = () => {
       </View>
     )
   if (error) {
-    console.error({ error })
-    return null
+    return <Error error={error} />
   }
   const { getAllBlogs: blogs } = data
 
