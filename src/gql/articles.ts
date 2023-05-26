@@ -42,6 +42,13 @@ export const GET_ONE_ARTICLE = gql`
             id
             type
             data {
+              caption
+              file {
+                url
+              }
+              stretched
+              withBackground
+              withBorder
               text
               level
               style

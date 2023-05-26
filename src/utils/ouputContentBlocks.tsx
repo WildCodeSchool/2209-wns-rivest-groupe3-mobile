@@ -1,8 +1,12 @@
-import { Text } from 'react-native'
+import { Text, Image } from 'react-native'
 import { Title } from 'react-native-paper'
 import parse from 'html-react-parser'
+import Constants from 'expo-constants'
+
 import { IContentBlock } from '../screens/BlogScreen'
 import { TabasColorTheme } from '../interfaces'
+
+const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
 const outputData = (
   index: number,
@@ -85,7 +89,21 @@ const outputData = (
           throw new Error('Header level must be specified')
       }
     case 'image':
-      return <img key={index} src={block.data.url} alt={block.data.alt} />
+      const imageUrl = block.data.file?.url as string
+      const uri = imageUrl.replace('http://localhost:8000', IMAGES_SERVICE_URL)
+      return (
+        <Image
+          style={{
+            width: '100%',
+            height: 200,
+            resizeMode: 'cover',
+            marginVertical: 5,
+          }}
+          key={index}
+          source={{ uri }}
+          alt={block.data.caption}
+        />
+      )
     case 'list':
       switch (block.data.style) {
         case 'unordered':
