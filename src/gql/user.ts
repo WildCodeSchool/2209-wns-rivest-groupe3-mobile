@@ -15,12 +15,14 @@ export const GET_USER = gql`
       lastName
       firstName
       description
-      avatar
       createdAt
       city
+      avatar
+      email
     }
   }
 `
+
 export const GET_TOKEN = gql`
   mutation Mutation($password: String!, $email: String!) {
     login: getToken(password: $password, email: $email) {

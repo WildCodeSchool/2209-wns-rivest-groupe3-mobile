@@ -6,7 +6,9 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  from,
 } from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
 import { setContext } from '@apollo/client/link/context'
 import Constants from 'expo-constants'
 import { UserProvider } from './src/contexts/UserContext'
@@ -71,8 +73,19 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    )
+
+  if (networkError) console.log(`[Network error]: ${networkError}`)
+})
+
 export const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([errorLink, authLink.concat(httpLink)]),
   cache: new InMemoryCache(),
 })
 

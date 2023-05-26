@@ -29,11 +29,3 @@ const ProfileStackScreen = () => {
 }
 
 export default ProfileStackScreen
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-})
