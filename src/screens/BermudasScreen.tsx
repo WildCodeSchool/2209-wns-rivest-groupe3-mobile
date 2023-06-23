@@ -27,7 +27,6 @@ const BermudasScreen = ({ navigation }: any) => {
     let media = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [1, 1],
       quality: 0.7,
       base64: true,
       videoMaxDuration: 30,
@@ -79,18 +78,24 @@ const BermudasScreen = ({ navigation }: any) => {
         <Text>Prendre un bermuda</Text>
       </TouchableOpacity>
 
-      {localImage && (
-        <Image style={main.media} source={{ uri: localImage?.uri }} />
-      )}
-      {localVideo && (
-        <Video
-          style={main.media}
-          source={{ uri: localVideo.uri }}
-          useNativeControls
-          resizeMode={ResizeMode.CONTAIN}
-          isLooping
-        />
-      )}
+      <View style={main.mediaContainer}>
+        {localImage && (
+          <Image
+            style={main.media}
+            source={{ uri: localImage?.uri }}
+            resizeMode="contain"
+          />
+        )}
+        {localVideo && (
+          <Video
+            style={main.media}
+            source={{ uri: localVideo.uri }}
+            useNativeControls
+            resizeMode={ResizeMode.CONTAIN}
+            isLooping
+          />
+        )}
+      </View>
     </View>
   )
 }
@@ -103,9 +108,12 @@ const main = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  media: {
-    flex: 0.5,
+  mediaContainer: {
+    flex: 0.6,
     width: '80%',
-    margin: 20,
+    marginVertical: 30,
+  },
+  media: {
+    height: '100%',
   },
 })
