@@ -1,6 +1,7 @@
-import { useState, useContext, useRef } from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
 import { useTheme } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
 
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { Video, ResizeMode } from 'expo-av'
@@ -44,30 +45,62 @@ const BermudasScreen = ({ navigation }: any) => {
     }
   }
 
-  // const data = new FormData();
-  //   data.append('fileData, {
-  //     uri: image,
-  //     type: 'image/jpeg',
-  //     name: 'blabla,
-  //   });
+  const uploadToCloudinary = async (media: string, url: string) => {
+    const data = new FormData()
+    data.append('file', media)
+    data.append('upload_preset', 'zwtluneg')
+    data.append('cloud_name', 'du5fcvup4')
 
-  // let base64Img = data:image/jpg;base64,${pickerResult.base64};
+    try {
+      let response = await fetch(url, {
+        body: data,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+        method: 'POST',
+      })
 
-  // JSON.stringify()
+      if (response.ok) {
+        const json = await response.json()
+        setCloudinaryUrl(json.secure_url)
+      } else {
+        console.log('CLOUDINARY ERROR', response)
+      }
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
 
-  // await singleFileUploader({
-  //   distantUrl:
-  //     "https://wildstagram.nausicaa.wilders.dev/upload",
-  //   expectedStatusCode: 201,
-  //   filename: image.item,
-  //   filetype: "image/jpeg",
-  //   formDataName: "fileData",
-  //   localUri:
-  //     FileSystem.cacheDirectory +
-  //     "ImageManipulator/" +
-  //     image.item,
-  //   token: Constants.manifest.extra.token,
-  // });
+  const mediaUpload = async () => {
+    let base64
+    let CLOUDINARY_URL
+
+    if (localImage) {
+      CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du5fcvup4/image/upload'
+
+      if (!localImage?.base64) {
+        let encodedImage = await FileSystem.readAsStringAsync(localImage?.uri, {
+          encoding: 'base64',
+        })
+        base64 = `data:image/jpg;base64,${encodedImage}`
+      }
+
+      if (localImage?.base64) {
+        base64 = `data:image/jpeg;base64,${localImage.base64}`
+      }
+    }
+
+    if (localVideo) {
+      CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du5fcvup4/video/upload'
+
+      let encodedVideo = await FileSystem.readAsStringAsync(localVideo?.uri, {
+        encoding: 'base64',
+      })
+      base64 = `data:video/mp4;base64,${encodedVideo}`
+    }
+
+    base64 && CLOUDINARY_URL && uploadToCloudinary(base64, CLOUDINARY_URL)
+  }
 
   return (
     <View style={main.container}>
@@ -95,6 +128,10 @@ const BermudasScreen = ({ navigation }: any) => {
             isLooping
           />
         )}
+
+        <TouchableOpacity onPress={mediaUpload}>
+          <Text>Envoyer</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )

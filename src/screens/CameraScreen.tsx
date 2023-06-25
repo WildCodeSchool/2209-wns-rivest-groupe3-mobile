@@ -67,8 +67,8 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
     if (cameraRef.current) {
       setLoading(true)
       const photo = await cameraRef.current.takePictureAsync()
-      setLocalImage(photo)
       setLocalVideo(null)
+      setLocalImage(photo)
       setLoading(false)
       navigation.navigate('CreateBermuda')
     }
@@ -117,8 +117,8 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
         let video = await cameraRef.current.recordAsync({
           maxDuration: 30,
         })
-        setLocalVideo({ ...video, width: undefined, height: undefined })
         setLocalImage(null)
+        setLocalVideo({ ...video, width: undefined, height: undefined })
       } else {
         setRecording(false)
         cameraRef.current.stopRecording()
