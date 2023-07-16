@@ -16,12 +16,12 @@ const BermudasStackNavigator = () => {
           headerShown: false,
         }}
       >
-        <BermudasStack.Screen name="CreateBermuda" component={BermudasScreen} />
-        <BermudasStack.Screen name="Camera" component={CameraScreen} />
         <BermudasStack.Screen
           name="BermudasList"
           component={BermudasListScreen}
         />
+        <BermudasStack.Screen name="CreateBermuda" component={BermudasScreen} />
+        <BermudasStack.Screen name="Camera" component={CameraScreen} />
       </BermudasStack.Navigator>
     </BermudasContextProvider>
   )

@@ -10,12 +10,14 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native'
 import { Video, ResizeMode } from 'expo-av'
 
 import { TabasColorTheme } from '../interfaces'
 import { BermudasContext } from '../contexts/BermudasContext'
 import Frame from '../component/Frame'
+import LargeButton from '../component/LargeButton'
 
 const BermudasScreen = ({ navigation }: any) => {
   const { colors, fonts } = useTheme() as TabasColorTheme
@@ -34,24 +36,42 @@ const BermudasScreen = ({ navigation }: any) => {
       requestLibraryPermission()
     }
 
-    let media = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      quality: 0.7,
-      base64: true,
-      videoMaxDuration: 30,
-    })
+    if (libraryStatus?.granted) {
+      let media = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        quality: 0.7,
+        base64: true,
+        videoMaxDuration: 30,
+      })
 
-    if (!media?.canceled) {
-      if (media.assets[0].type === 'image') {
-        setLocalVideo(null)
-        setLocalImage(media.assets[0])
-      }
-      if (media.assets[0].type === 'video') {
-        setLocalVideo(media.assets[0])
-        setLocalImage(null)
+      if (!media?.canceled) {
+        if (media.assets[0].type === 'image') {
+          setLocalVideo(null)
+          setLocalImage(media.assets[0])
+        }
+        if (media.assets[0].type === 'video') {
+          setLocalVideo(media.assets[0])
+          setLocalImage(null)
+        }
       }
     }
+  }
+
+  const alert = (message: string, navigate: boolean) => {
+    Alert.alert(
+      '',
+      message,
+      [
+        {
+          text: 'OK',
+          onPress: () => navigate && navigation.navigate('BermudasList'),
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
   }
 
   const uploadToCloudinary = async (media: string, url: string) => {
@@ -73,13 +93,18 @@ const BermudasScreen = ({ navigation }: any) => {
         setLoading(false)
         const json = await response.json()
         setCloudinaryUrl(json.secure_url)
+        alert('Bermuda enregistré avec succès !', true)
         console.log(cloudinaryUrl)
       } else {
         setLoading(false)
-        console.log('CLOUDINARY ERROR', response)
+        alert(
+          "Une erreur est survenue lors de l'enregistrement du bermuda, veuillez recommencer.",
+          false
+        )
+        console.error('CLOUDINARY ERROR', response)
       }
     } catch (error) {
-      console.log('ERROR', error)
+      console.error(error)
     }
   }
 
@@ -116,6 +141,12 @@ const BermudasScreen = ({ navigation }: any) => {
     base64 && CLOUDINARY_URL && uploadToCloudinary(base64, CLOUDINARY_URL)
   }
 
+  useEffect(() => {
+    setLocalImage(null)
+    setLocalVideo(null)
+    setCloudinaryUrl(null)
+  }, [])
+
   return (
     <View
       style={{
@@ -132,34 +163,22 @@ const BermudasScreen = ({ navigation }: any) => {
         />
       )}
       <View style={main.topButtons}>
-        <TouchableOpacity
-          style={[main.button, { backgroundColor: colors.primary }]}
+        <LargeButton
+          text="SELECTIONNER UN BERMUDA"
+          width="80%"
+          backgroundColor={colors.primary}
+          color={colors.background}
+          fontFamily={fonts.default}
           onPress={pickImage}
-        >
-          <Text
-            style={{
-              ...main.text,
-              color: colors.background,
-              fontFamily: fonts.default,
-            }}
-          >
-            SELECTIONNER UN BERMUDA
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[main.button, { backgroundColor: colors.primary }]}
+        />
+        <LargeButton
+          text="PRENDRE UN BERMUDA"
+          width="80%"
+          backgroundColor={colors.primary}
+          color={colors.background}
+          fontFamily={fonts.default}
           onPress={() => navigation.navigate('Camera')}
-        >
-          <Text
-            style={{
-              ...main.text,
-              color: colors.background,
-              fontFamily: fonts.default,
-            }}
-          >
-            PRENDRE UN BERMUDA
-          </Text>
-        </TouchableOpacity>
+        />
       </View>
 
       {(localImage || localVideo) && (
@@ -190,25 +209,14 @@ const BermudasScreen = ({ navigation }: any) => {
             )}
           </View>
 
-          <TouchableOpacity
-            style={[
-              main.button,
-              {
-                backgroundColor: colors.highlight,
-              },
-            ]}
+          <LargeButton
+            text="ENVOYER"
+            width="80%"
+            backgroundColor={colors.highlight}
+            color={colors.card}
+            fontFamily={fonts.default}
             onPress={mediaUpload}
-          >
-            <Text
-              style={{
-                ...main.text,
-                color: colors.card,
-                fontFamily: fonts.default,
-              }}
-            >
-              ENVOYER
-            </Text>
-          </TouchableOpacity>
+          />
         </>
       )}
     </View>
@@ -239,19 +247,6 @@ const main = StyleSheet.create({
     zIndex: 10,
     width: '95%',
     height: '95%',
-  },
-  button: {
-    margin: 10,
-    padding: 10,
-    width: '80%',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  text: {
-    textAlign: 'center',
-    paddingHorizontal: 10,
   },
   loading: {
     position: 'absolute',

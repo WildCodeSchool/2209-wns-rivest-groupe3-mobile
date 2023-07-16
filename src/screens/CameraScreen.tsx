@@ -229,7 +229,7 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
                 <Text
                   style={{
                     ...camera.text,
-                    color: colors.highlight,
+                    color: colors.notification,
                     fontFamily: fonts.default,
                   }}
                 >
