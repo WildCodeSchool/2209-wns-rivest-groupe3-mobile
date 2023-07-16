@@ -76,34 +76,30 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
 
   const [recording, setRecording] = useState(false)
   const [timer, setTimer] = useState<number>(30)
-  useEffect(() => {
-    let videoTimeout: any
-    let videoTimer: any
 
+  let videoTimeout: number
+  let videoTimer: number
+  useEffect(() => {
     if (recording) {
-      videoTimeout = setTimeout(() => {
+      videoTimeout = window.setTimeout(() => {
         setRecording(false)
         cameraRef.current && cameraRef.current.stopRecording()
         navigation.navigate('CreateBermuda')
       }, 30000)
 
-      videoTimer = setInterval(() => {
+      videoTimer = window.setInterval(() => {
         setTimer((current) => current - 1)
       }, 1000)
     }
+  }, [recording])
 
-    if (!recording) {
-      clearTimeout(videoTimeout)
-      clearInterval(videoTimer)
-      setTimer(30)
-    }
-
+  useEffect(() => {
     return () => {
       clearTimeout(videoTimeout)
       clearInterval(videoTimer)
       setTimer(30)
     }
-  }, [recording])
+  }, [])
 
   const recordVideo = async () => {
     if (cameraRef.current) {

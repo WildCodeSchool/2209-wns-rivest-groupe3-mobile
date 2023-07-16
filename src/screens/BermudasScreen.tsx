@@ -1,17 +1,9 @@
-import { useState, useContext, useRef, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useTheme } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  Alert,
-} from 'react-native'
+import { View, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native'
 import { Video, ResizeMode } from 'expo-av'
 
 import { TabasColorTheme } from '../interfaces'
@@ -19,7 +11,7 @@ import { BermudasContext } from '../contexts/BermudasContext'
 import Frame from '../component/Frame'
 import LargeButton from '../component/LargeButton'
 
-const BermudasScreen = ({ navigation }: any) => {
+const BermudasScreen = ({ navigation }: { navigation: any }) => {
   const { colors, fonts } = useTheme() as TabasColorTheme
 
   const { localImage, setLocalImage, localVideo, setLocalVideo } =
@@ -94,7 +86,6 @@ const BermudasScreen = ({ navigation }: any) => {
         const json = await response.json()
         setCloudinaryUrl(json.secure_url)
         alert('Bermuda enregistré avec succès !', true)
-        console.log(cloudinaryUrl)
       } else {
         setLoading(false)
         alert(
