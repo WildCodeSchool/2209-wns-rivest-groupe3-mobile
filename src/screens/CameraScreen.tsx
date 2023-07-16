@@ -7,7 +7,7 @@ import { Camera, CameraType } from 'expo-camera'
 
 import { useTheme } from '@react-navigation/native'
 import { TabasColorTheme } from '../interfaces'
-import LoadingLoop from '../component/LoadingLoop'
+import { ActivityIndicator } from 'react-native-paper'
 
 const CameraScreen = ({ navigation }: { navigation: any }) => {
   const { colors, fonts } = useTheme() as TabasColorTheme
@@ -53,7 +53,7 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
     checkPermissions()
   }, [])
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const [type, setType] = useState<CameraType>(CameraType.back)
   const toggleCameraType = () => {
@@ -75,7 +75,7 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
   }
 
   const [recording, setRecording] = useState(false)
-  const [timer, setTimer] = useState<number>(0)
+  const [timer, setTimer] = useState<number>(30)
   useEffect(() => {
     let videoTimeout: any
     let videoTimer: any
@@ -88,20 +88,20 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
       }, 30000)
 
       videoTimer = setInterval(() => {
-        setTimer((current) => current + 1)
+        setTimer((current) => current - 1)
       }, 1000)
     }
 
     if (!recording) {
       clearTimeout(videoTimeout)
       clearInterval(videoTimer)
-      setTimer(0)
+      setTimer(30)
     }
 
     return () => {
       clearTimeout(videoTimeout)
       clearInterval(videoTimer)
-      setTimer(0)
+      setTimer(30)
     }
   }, [recording])
 
@@ -194,18 +194,18 @@ const CameraScreen = ({ navigation }: { navigation: any }) => {
       <View style={main.container}>
         <Camera style={camera.camera} type={type} ref={cameraRef}>
           {loading && (
-            <LoadingLoop
-              loading={loading}
-              size={24}
-              color={colors.notification}
-              absolute={true}
+            <ActivityIndicator
+              color={colors.highlight}
+              size={'large'}
+              animating={true}
+              style={camera.loading}
             />
           )}
           <View style={camera.topContainer}>
             <Text
               style={[
                 camera.timer,
-                timer < 20
+                timer > 10
                   ? { color: colors.primary }
                   : { color: colors.notification },
               ]}
@@ -359,5 +359,11 @@ const camera = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: 'flex-start',
     fontSize: 20,
+  },
+  loading: {
+    position: 'absolute',
+    zIndex: 20,
+    alignSelf: 'center',
+    top: '50%',
   },
 })

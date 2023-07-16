@@ -3,11 +3,19 @@ import { useTheme } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native'
 import { Video, ResizeMode } from 'expo-av'
 
 import { TabasColorTheme } from '../interfaces'
 import { BermudasContext } from '../contexts/BermudasContext'
+import Frame from '../component/Frame'
 
 const BermudasScreen = ({ navigation }: any) => {
   const { colors, fonts } = useTheme() as TabasColorTheme
@@ -16,6 +24,7 @@ const BermudasScreen = ({ navigation }: any) => {
     useContext(BermudasContext)
 
   const [cloudinaryUrl, setCloudinaryUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const [libraryStatus, requestLibraryPermission] =
     ImagePicker.useMediaLibraryPermissions()
@@ -61,9 +70,12 @@ const BermudasScreen = ({ navigation }: any) => {
       })
 
       if (response.ok) {
+        setLoading(false)
         const json = await response.json()
         setCloudinaryUrl(json.secure_url)
+        console.log(cloudinaryUrl)
       } else {
+        setLoading(false)
         console.log('CLOUDINARY ERROR', response)
       }
     } catch (error) {
@@ -74,6 +86,8 @@ const BermudasScreen = ({ navigation }: any) => {
   const mediaUpload = async () => {
     let base64
     let CLOUDINARY_URL
+
+    setLoading(true)
 
     if (localImage) {
       CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/du5fcvup4/image/upload'
@@ -103,36 +117,100 @@ const BermudasScreen = ({ navigation }: any) => {
   }
 
   return (
-    <View style={main.container}>
-      <TouchableOpacity onPress={pickImage}>
-        <Text>Sélectionner un bermuda dans la galerie</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
-        <Text>Prendre un bermuda</Text>
-      </TouchableOpacity>
-
-      <View style={main.mediaContainer}>
-        {localImage && (
-          <Image
-            style={main.media}
-            source={{ uri: localImage?.uri }}
-            resizeMode="contain"
-          />
-        )}
-        {localVideo && (
-          <Video
-            style={main.media}
-            source={{ uri: localVideo.uri }}
-            useNativeControls
-            resizeMode={ResizeMode.CONTAIN}
-            isLooping
-          />
-        )}
-
-        <TouchableOpacity onPress={mediaUpload}>
-          <Text>Envoyer</Text>
+    <View
+      style={{
+        ...main.container,
+        justifyContent: localImage || localVideo ? 'space-between' : 'center',
+      }}
+    >
+      {loading && (
+        <ActivityIndicator
+          color={colors.highlight}
+          size={'large'}
+          animating={true}
+          style={main.loading}
+        />
+      )}
+      <View style={main.topButtons}>
+        <TouchableOpacity
+          style={[main.button, { backgroundColor: colors.primary }]}
+          onPress={pickImage}
+        >
+          <Text
+            style={{
+              ...main.text,
+              color: colors.background,
+              fontFamily: fonts.default,
+            }}
+          >
+            SELECTIONNER UN BERMUDA
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[main.button, { backgroundColor: colors.primary }]}
+          onPress={() => navigation.navigate('Camera')}
+        >
+          <Text
+            style={{
+              ...main.text,
+              color: colors.background,
+              fontFamily: fonts.default,
+            }}
+          >
+            PRENDRE UN BERMUDA
+          </Text>
         </TouchableOpacity>
       </View>
+
+      {(localImage || localVideo) && (
+        <>
+          <View style={main.mediaContainer}>
+            <Frame
+              width="100%"
+              height="100%"
+              cornerLength={20}
+              cornerWidth={5}
+              color={colors.primary}
+            />
+            {localImage && (
+              <Image
+                style={{ ...main.media, backgroundColor: colors.background }}
+                source={{ uri: localImage?.uri }}
+                resizeMode="contain"
+              />
+            )}
+            {localVideo && (
+              <Video
+                style={{ ...main.media, backgroundColor: colors.background }}
+                source={{ uri: localVideo.uri }}
+                useNativeControls
+                resizeMode={ResizeMode.CONTAIN}
+                isLooping
+              />
+            )}
+          </View>
+
+          <TouchableOpacity
+            style={[
+              main.button,
+              {
+                backgroundColor: colors.highlight,
+              },
+            ]}
+            onPress={mediaUpload}
+          >
+            <Text
+              style={{
+                ...main.text,
+                color: colors.card,
+                fontFamily: fonts.default,
+              }}
+            >
+              ENVOYER
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   )
 }
@@ -142,15 +220,42 @@ export default BermudasScreen
 const main = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
+  topButtons: {
+    width: '100%',
+    alignItems: 'center',
+    paddingTop: 25,
+  },
   mediaContainer: {
-    flex: 0.6,
+    flex: 0.9,
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '80%',
-    marginVertical: 30,
   },
   media: {
-    height: '100%',
+    position: 'absolute',
+    zIndex: 10,
+    width: '95%',
+    height: '95%',
+  },
+  button: {
+    margin: 10,
+    padding: 10,
+    width: '80%',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  text: {
+    textAlign: 'center',
+    paddingHorizontal: 10,
+  },
+  loading: {
+    position: 'absolute',
+    zIndex: 20,
+    top: '50%',
   },
 })
