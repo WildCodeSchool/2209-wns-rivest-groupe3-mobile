@@ -64,7 +64,7 @@ export const GET_ONE_BLOG = gql`
       slug
       createdAt
       coverUrl
-      editor: user {
+      user {
         id
         avatar
         nickname
@@ -78,6 +78,8 @@ export const GET_ONE_BLOG = gql`
         id
         slug
         title
+        show
+        coverUrl
         articleContent {
           id
           content {
