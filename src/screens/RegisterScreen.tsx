@@ -11,7 +11,7 @@ import { TabasColorTheme } from '../interfaces'
 import { useState } from 'react'
 
 const RegisterScreen = () => {
-  const { colors } = useTheme() as TabasColorTheme
+  const { colors, fonts } = useTheme() as TabasColorTheme
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -120,6 +120,7 @@ const RegisterScreen = () => {
                   color: colors.primary,
                   fontWeight: 'bold',
                   fontSize: 18,
+                  fontFamily: fonts.default,
                 }}
               >
                 ENREGISTRER
