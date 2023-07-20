@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client'
 import Constants from 'expo-constants'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useTheme } from '@react-navigation/native'
 import { useContext } from 'react'
 import {
@@ -15,8 +14,9 @@ import {
 import { IUser, IUserContext, UserContext } from '../contexts/UserContext'
 import { GET_USER } from '../gql/user'
 import { TabasColorTheme } from '../interfaces'
-import removeItemFromStorage from '../utils/removeItemFromAsyncStorage'
 import Error from '../component/Error'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SecureStore from 'expo-secure-store'
 
 const IMAGES_SERVICE_URL = Constants.expoConfig?.extra?.imagesServiceUrl || ''
 
@@ -24,8 +24,8 @@ const ProfileScreen = () => {
   const { user, setUser } = useContext<IUserContext>(UserContext)
   const { colors } = useTheme() as TabasColorTheme
   const logout = async () => {
-    await removeItemFromStorage('loggedUser')
-    await removeItemFromStorage('token')
+    await AsyncStorage.removeItem('loggedUser')
+    await SecureStore.deleteItemAsync('token')
     setUser(null)
   }
   const { data, loading, error, refetch } = useQuery(GET_USER, {
