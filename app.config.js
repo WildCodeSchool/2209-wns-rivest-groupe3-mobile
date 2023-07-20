@@ -2,8 +2,8 @@ module.exports = ({ config }) => {
   return {
     ...config,
     extra: {
-      apiUrl: 'https://www.api.staging.tabas.blog',
-      imagesServiceUrl: 'https://www.images.staging.tabas.blog',
+      apiUrl: 'https://api.staging.tabas.blog',
+      imagesServiceUrl: 'https://images.staging.tabas.blog',
     },
   }
 }

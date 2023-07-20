@@ -1,6 +1,6 @@
 import { ActivityIndicator, useColorScheme, View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SecureStore from 'expo-secure-store'
 import {
   ApolloClient,
   InMemoryCache,
@@ -14,9 +14,7 @@ import Constants from 'expo-constants'
 import { UserProvider } from './src/contexts/UserContext'
 import {
   useFonts,
-  RobotoCondensed_300Light,
   RobotoCondensed_400Regular,
-  RobotoCondensed_700Bold,
 } from '@expo-google-fonts/roboto-condensed'
 import { Lobster_400Regular } from '@expo-google-fonts/lobster'
 import BottomTabs from './src/navigation/Tabs'
@@ -63,7 +61,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = await AsyncStorage.getItem('token')
+  const token = await SecureStore.getItemAsync('token')
   // return the headers to the context so httpLink can read them
   return {
     headers: {

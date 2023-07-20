@@ -16,6 +16,7 @@ import { useContext, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { GET_TOKEN } from '../gql/user'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SecureStore from 'expo-secure-store'
 import { IUser, IUserContext, UserContext } from '../contexts/UserContext'
 
 const LoginScreen = () => {
@@ -35,7 +36,7 @@ const LoginScreen = () => {
     })
       .then(async (res) => {
         const { user, token } = res.data.login
-        await AsyncStorage.setItem('token', token)
+        await SecureStore.setItemAsync('token', token)
         const localUser = {
           id: user.id,
           nickname: user.nickname,
@@ -46,7 +47,7 @@ const LoginScreen = () => {
       })
       .catch((error) => {
         console.error(error)
-        Alert.alert('Error', 'Something went wrong')
+        Alert.alert('Error', error.message)
       })
   }
 
@@ -130,6 +131,7 @@ const LoginScreen = () => {
                     color: colors.primary,
                     fontWeight: 'bold',
                     fontSize: 18,
+                    fontFamily: fonts.default,
                   }}
                 >
                   CONNEXION
