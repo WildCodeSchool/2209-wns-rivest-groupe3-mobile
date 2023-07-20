@@ -2,7 +2,6 @@ import * as React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomTabNavigatorParamList } from './types'
 import HomeStackNavigator from './HomeStack'
-import BermudasScreen from '../screens/BermudasScreen'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -10,6 +9,7 @@ import { StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { TabasColorTheme } from '../interfaces'
 import ProfileStackScreen from './ProfileStackScreen'
+import BermudasStackNavigator from './BermudasStack'
 
 const BottomTabs = () => {
   const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>()
@@ -45,7 +45,7 @@ const BottomTabs = () => {
       >
         <Tab.Screen name="HomeStack" component={HomeStackNavigator} />
         <Tab.Screen name="ProfileStack" component={ProfileStackScreen} />
-        <Tab.Screen name="Bermudas" component={BermudasScreen} />
+        <Tab.Screen name="Bermudas" component={BermudasStackNavigator} />
       </Tab.Navigator>
     </SafeAreaView>
   )
