@@ -10,6 +10,10 @@ import {
   Alert,
   TextInput,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native'
 import { Video, ResizeMode } from 'expo-av'
 import Constants from 'expo-constants'
@@ -175,116 +179,124 @@ const BermudasScreen = ({ navigation }: { navigation: any }) => {
   }, [])
 
   return (
-    <View
-      style={{
-        ...main.container,
-        justifyContent: localImage || localVideo ? 'space-between' : 'center',
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      {loading && (
-        <ActivityIndicator
-          color={colors.highlight}
-          size={'large'}
-          animating={true}
-          style={main.loading}
-        />
-      )}
-      {keyboard === false && (
-        <View style={main.topButtons}>
-          <LargeButton
-            text="SELECTIONNER UN BERMUDA"
-            width="80%"
-            backgroundColor={colors.primary}
-            color={colors.background}
-            fontFamily={fonts.default}
-            onPress={pickImage}
-          />
-          <LargeButton
-            text="PRENDRE UN BERMUDA"
-            width="80%"
-            backgroundColor={colors.primary}
-            color={colors.background}
-            fontFamily={fonts.default}
-            onPress={() => navigation.navigate('Camera')}
-          />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View
+          style={{
+            ...main.container,
+            justifyContent:
+              localImage || localVideo ? 'space-between' : 'center',
+          }}
+        >
+          {loading && (
+            <ActivityIndicator
+              color={colors.highlight}
+              size={'large'}
+              animating={true}
+              style={main.loading}
+            />
+          )}
+          {keyboard === false && (
+            <View style={main.topButtons}>
+              <LargeButton
+                text="SELECTIONNER UN BERMUDA"
+                width="80%"
+                backgroundColor={colors.primary}
+                color={colors.background}
+                fontFamily={fonts.default}
+                onPress={pickImage}
+              />
+              <LargeButton
+                text="PRENDRE UN BERMUDA"
+                width="80%"
+                backgroundColor={colors.primary}
+                color={colors.background}
+                fontFamily={fonts.default}
+                onPress={() => navigation.navigate('Camera')}
+              />
+            </View>
+          )}
+
+          {(localImage || localVideo) && (
+            <>
+              <View style={main.mediaAndText}>
+                <View
+                  style={{
+                    ...main.mediaContainer,
+                    width: keyboard ? undefined : '100%',
+                    flex: keyboard ? 1 : undefined,
+                    margin: keyboard ? 30 : undefined,
+                  }}
+                >
+                  {localImage && (
+                    <Image
+                      style={{
+                        ...main.media,
+                        backgroundColor: colors.background,
+                      }}
+                      source={{ uri: localImage?.uri }}
+                      resizeMode="contain"
+                    />
+                  )}
+                  {localVideo && (
+                    <Video
+                      style={{
+                        ...main.media,
+                        backgroundColor: colors.background,
+                      }}
+                      source={{ uri: localVideo.uri }}
+                      useNativeControls
+                      resizeMode={ResizeMode.CONTAIN}
+                      isLooping
+                    />
+                  )}
+                  <Frame
+                    width="100%"
+                    cornerLength={20}
+                    cornerWidth={5}
+                    color={colors.primary}
+                  />
+                </View>
+
+                <View style={main.textContainer}>
+                  <TextInput
+                    style={{
+                      ...main.textInput,
+                      backgroundColor: colors.background,
+                      color: colors.primary,
+                    }}
+                    value={text}
+                    onChangeText={setText}
+                    placeholder=" Commenter cette photo ..."
+                    placeholderTextColor={colors.primary}
+                    multiline={true}
+                    maxLength={120}
+                  />
+                  <View
+                    style={{
+                      ...main.bottomLine,
+                      backgroundColor: colors.highlight,
+                    }}
+                  />
+                </View>
+              </View>
+
+              <LargeButton
+                text="ENVOYER"
+                width="80%"
+                backgroundColor={colors.highlight}
+                color={colors.card}
+                fontFamily={fonts.default}
+                onPress={mediaUpload}
+              />
+            </>
+          )}
         </View>
-      )}
-
-      {(localImage || localVideo) && (
-        <>
-          <View style={main.mediaAndText}>
-            <View
-              style={{
-                ...main.mediaContainer,
-                width: keyboard ? undefined : '100%',
-                flex: keyboard ? 1 : undefined,
-                margin: keyboard ? 30 : undefined,
-              }}
-            >
-              {localImage && (
-                <Image
-                  style={{
-                    ...main.media,
-                    backgroundColor: colors.background,
-                  }}
-                  source={{ uri: localImage?.uri }}
-                  resizeMode="contain"
-                />
-              )}
-              {localVideo && (
-                <Video
-                  style={{
-                    ...main.media,
-                    backgroundColor: colors.background,
-                  }}
-                  source={{ uri: localVideo.uri }}
-                  useNativeControls
-                  resizeMode={ResizeMode.CONTAIN}
-                  isLooping
-                />
-              )}
-              <Frame
-                width="100%"
-                cornerLength={20}
-                cornerWidth={5}
-                color={colors.primary}
-              />
-            </View>
-
-            <View style={main.textContainer}>
-              <TextInput
-                style={{
-                  ...main.textInput,
-                  backgroundColor: colors.background,
-                  color: colors.primary,
-                }}
-                value={text}
-                onChangeText={setText}
-                placeholder=" Commenter cette photo ..."
-                placeholderTextColor={colors.primary}
-                multiline={true}
-                maxLength={120}
-              />
-              <View
-                style={{
-                  ...main.bottomLine,
-                  backgroundColor: colors.highlight,
-                }}
-              />
-            </View>
-          </View>
-
-          <LargeButton
-            text="ENVOYER"
-            width="80%"
-            backgroundColor={colors.highlight}
-            color={colors.card}
-            fontFamily={fonts.default}
-            onPress={mediaUpload}
-          />
-        </>
-      )}
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   )
 }
 
