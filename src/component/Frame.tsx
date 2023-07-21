@@ -2,20 +2,13 @@ import { StyleSheet, View } from 'react-native'
 
 interface IFrameProps {
   width: number | string
-  height: number | string
   cornerLength: number
   cornerWidth: number
   color: string
 }
-const Frame = ({
-  width,
-  height,
-  cornerLength,
-  cornerWidth,
-  color,
-}: IFrameProps) => {
+const Frame = ({ width, cornerLength, cornerWidth, color }: IFrameProps) => {
   return (
-    <View style={{ ...main.container, width, height }}>
+    <View style={{ ...main.container, width }}>
       <View
         style={{
           ...corner.topLeft,
@@ -88,6 +81,8 @@ export default Frame
 
 const main = StyleSheet.create({
   container: {
+    flex: 1,
+    aspectRatio: 1,
     position: 'relative',
   },
 })
