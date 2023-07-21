@@ -2,8 +2,9 @@ module.exports = ({ config }) => {
   return {
     ...config,
     extra: {
-      apiUrl: 'http://192.168.1.22:5000/',
-      imagesServiceUrl: 'http://192.168.1.22:8000',
+      apiUrl: 'https://api.staging.tabas.blog',
+      imagesServiceUrl: 'https://images.staging.tabas.blog',
+      cloudinaryServiceUrl: 'https://res.cloudinary.com/du5fcvup4/',
     },
   }
 }
