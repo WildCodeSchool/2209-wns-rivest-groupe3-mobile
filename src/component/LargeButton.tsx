@@ -1,8 +1,13 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import {
+  DimensionValue,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
 
 interface ILargeButtonProps {
   text: string
-  width: number | string
+  width: DimensionValue | undefined
   backgroundColor: string
   color: string
   fontFamily: string
@@ -49,7 +54,6 @@ const style = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
   },
   text: {
     textAlign: 'center',
