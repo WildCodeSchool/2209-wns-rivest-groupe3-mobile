@@ -2,14 +2,24 @@ import { useState, useContext, useEffect } from 'react'
 import { useTheme } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
-
-import { View, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+  Alert,
+  TextInput,
+  Keyboard,
+} from 'react-native'
 import { Video, ResizeMode } from 'expo-av'
+import Constants from 'expo-constants'
 
 import { TabasColorTheme } from '../interfaces'
 import { BermudasContext } from '../contexts/BermudasContext'
 import Frame from '../component/Frame'
 import LargeButton from '../component/LargeButton'
+import { useMutation } from '@apollo/client'
+import { CREATE_BERMUDA } from '../queries/Bermudas'
 
 const BermudasScreen = ({ navigation }: { navigation: any }) => {
   const { colors, fonts } = useTheme() as TabasColorTheme
@@ -17,11 +27,36 @@ const BermudasScreen = ({ navigation }: { navigation: any }) => {
   const { localImage, setLocalImage, localVideo, setLocalVideo } =
     useContext(BermudasContext)
 
-  const [cloudinaryUrl, setCloudinaryUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const [text, setText] = useState('')
 
   const [libraryStatus, requestLibraryPermission] =
     ImagePicker.useMediaLibraryPermissions()
+
+  const alert = (message: string, navigate: boolean) => {
+    Alert.alert(
+      '',
+      message,
+      [
+        {
+          text: 'OK',
+          onPress: () => navigate && navigation.navigate('BermudasList'),
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
+  }
+
+  const [createBermuda, { error }] = useMutation(CREATE_BERMUDA)
+  if (error) {
+    console.error(error)
+    alert(
+      "Oups ! Une erreur est survenue lors de l'enregistrement du bermuda, veuillez recommencer.",
+      false
+    )
+  }
 
   const pickImage = async () => {
     if (!libraryStatus?.granted) {
@@ -50,31 +85,18 @@ const BermudasScreen = ({ navigation }: { navigation: any }) => {
     }
   }
 
-  const alert = (message: string, navigate: boolean) => {
-    Alert.alert(
-      '',
-      message,
-      [
-        {
-          text: 'OK',
-          onPress: () => navigate && navigation.navigate('BermudasList'),
-        },
-      ],
-      {
-        cancelable: true,
-      }
-    )
-  }
+  const CLOUDINARY_SERVICE_URL =
+    Constants.expoConfig?.extra?.cloudinaryServiceUrl || ''
 
   const uploadToCloudinary = async (media: string, url: string) => {
-    const data = new FormData()
-    data.append('file', media)
-    data.append('upload_preset', 'zwtluneg')
-    data.append('cloud_name', 'du5fcvup4')
+    const body = new FormData()
+    body.append('file', media)
+    body.append('upload_preset', 'zwtluneg')
+    body.append('cloud_name', 'du5fcvup4')
 
     try {
       let response = await fetch(url, {
-        body: data,
+        body,
         headers: {
           'content-type': 'multipart/form-data',
         },
@@ -84,12 +106,18 @@ const BermudasScreen = ({ navigation }: { navigation: any }) => {
       if (response.ok) {
         setLoading(false)
         const json = await response.json()
-        setCloudinaryUrl(json.secure_url)
+        const imageUrl = json.secure_url.replace(CLOUDINARY_SERVICE_URL, '')
+        createBermuda({
+          variables: {
+            text,
+            imageUrl,
+          },
+        })
         alert('Bermuda enregistré avec succès !', true)
       } else {
         setLoading(false)
         alert(
-          "Une erreur est survenue lors de l'enregistrement du bermuda, veuillez recommencer.",
+          "Oups ! Une erreur est survenue lors de l'enregistrement du bermuda, veuillez recommencer.",
           false
         )
         console.error('CLOUDINARY ERROR', response)
@@ -132,10 +160,18 @@ const BermudasScreen = ({ navigation }: { navigation: any }) => {
     base64 && CLOUDINARY_URL && uploadToCloudinary(base64, CLOUDINARY_URL)
   }
 
+  const [keyboard, setKeyboard] = useState<boolean>(false)
+
   useEffect(() => {
     setLocalImage(null)
     setLocalVideo(null)
-    setCloudinaryUrl(null)
+
+    Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboard(true)
+    })
+    Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboard(false)
+    })
   }, [])
 
   return (
@@ -153,51 +189,89 @@ const BermudasScreen = ({ navigation }: { navigation: any }) => {
           style={main.loading}
         />
       )}
-      <View style={main.topButtons}>
-        <LargeButton
-          text="SELECTIONNER UN BERMUDA"
-          width="80%"
-          backgroundColor={colors.primary}
-          color={colors.background}
-          fontFamily={fonts.default}
-          onPress={pickImage}
-        />
-        <LargeButton
-          text="PRENDRE UN BERMUDA"
-          width="80%"
-          backgroundColor={colors.primary}
-          color={colors.background}
-          fontFamily={fonts.default}
-          onPress={() => navigation.navigate('Camera')}
-        />
-      </View>
+      {keyboard === false && (
+        <View style={main.topButtons}>
+          <LargeButton
+            text="SELECTIONNER UN BERMUDA"
+            width="80%"
+            backgroundColor={colors.primary}
+            color={colors.background}
+            fontFamily={fonts.default}
+            onPress={pickImage}
+          />
+          <LargeButton
+            text="PRENDRE UN BERMUDA"
+            width="80%"
+            backgroundColor={colors.primary}
+            color={colors.background}
+            fontFamily={fonts.default}
+            onPress={() => navigation.navigate('Camera')}
+          />
+        </View>
+      )}
 
       {(localImage || localVideo) && (
         <>
-          <View style={main.mediaContainer}>
-            <Frame
-              width="100%"
-              height="100%"
-              cornerLength={20}
-              cornerWidth={5}
-              color={colors.primary}
-            />
-            {localImage && (
-              <Image
-                style={{ ...main.media, backgroundColor: colors.background }}
-                source={{ uri: localImage?.uri }}
-                resizeMode="contain"
+          <View style={main.mediaAndText}>
+            <View
+              style={{
+                ...main.mediaContainer,
+                width: keyboard ? undefined : '100%',
+                flex: keyboard ? 1 : undefined,
+                margin: keyboard ? 30 : undefined,
+              }}
+            >
+              {localImage && (
+                <Image
+                  style={{
+                    ...main.media,
+                    backgroundColor: colors.background,
+                  }}
+                  source={{ uri: localImage?.uri }}
+                  resizeMode="contain"
+                />
+              )}
+              {localVideo && (
+                <Video
+                  style={{
+                    ...main.media,
+                    backgroundColor: colors.background,
+                  }}
+                  source={{ uri: localVideo.uri }}
+                  useNativeControls
+                  resizeMode={ResizeMode.CONTAIN}
+                  isLooping
+                />
+              )}
+              <Frame
+                width="100%"
+                cornerLength={20}
+                cornerWidth={5}
+                color={colors.primary}
               />
-            )}
-            {localVideo && (
-              <Video
-                style={{ ...main.media, backgroundColor: colors.background }}
-                source={{ uri: localVideo.uri }}
-                useNativeControls
-                resizeMode={ResizeMode.CONTAIN}
-                isLooping
+            </View>
+
+            <View style={main.textContainer}>
+              <TextInput
+                style={{
+                  ...main.textInput,
+                  backgroundColor: colors.background,
+                  color: colors.primary,
+                }}
+                value={text}
+                onChangeText={setText}
+                placeholder=" Commenter cette photo ..."
+                placeholderTextColor={colors.primary}
+                multiline={true}
+                maxLength={120}
               />
-            )}
+              <View
+                style={{
+                  ...main.bottomLine,
+                  backgroundColor: colors.highlight,
+                }}
+              />
+            </View>
           </View>
 
           <LargeButton
@@ -226,18 +300,34 @@ const main = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 25,
   },
-  mediaContainer: {
+  mediaAndText: {
     flex: 0.9,
+    width: '80%',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  mediaContainer: {
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '80%',
+    aspectRatio: 1,
   },
   media: {
     position: 'absolute',
-    zIndex: 10,
     width: '95%',
-    height: '95%',
+    aspectRatio: 1,
+  },
+  textContainer: {
+    flex: 0.7,
+    width: '100%',
+  },
+  textInput: {
+    flex: 1,
+    width: '100%',
+  },
+  bottomLine: {
+    height: 2,
+    width: '100%',
   },
   loading: {
     position: 'absolute',
