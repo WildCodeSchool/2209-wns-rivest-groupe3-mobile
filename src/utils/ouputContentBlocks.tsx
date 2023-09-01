@@ -1,6 +1,6 @@
 import { Text, Image } from 'react-native'
 import { Title } from 'react-native-paper'
-import parse from 'html-react-parser'
+import parse, { Element } from 'html-react-parser'
 import Constants from 'expo-constants'
 
 import { IContentBlock } from '../screens/BlogScreen'
@@ -85,6 +85,12 @@ const outputData = (
               {block.data.text}
             </Title>
           )
+        case 6:
+          return (
+            <Title key={index} style={{ color: colors.text, fontSize: 15 }}>
+              {block.data.text}
+            </Title>
+          )
         default:
           throw new Error('Header level must be specified')
       }
@@ -129,7 +135,13 @@ const outputData = (
     case 'paragraph':
       return (
         <Text key={index} style={{ color: colors.text, textAlign: 'justify' }}>
-          {parse(block.data.text || '')}
+          {parse(block.data.text || '', {
+            replace: (domNode) => {
+              if (domNode instanceof Element && domNode.name === 'br') {
+                return <></>
+              }
+            },
+          })}
         </Text>
       )
 
